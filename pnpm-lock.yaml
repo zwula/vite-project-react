@@ -28,6 +28,9 @@ devDependencies:
   '@vitejs/plugin-react':
     specifier: ^4.0.3
     version: 4.0.3(vite@4.4.5)
+  cz-git:
+    specifier: ^1.7.1
+    version: 1.7.1
   eslint:
     specifier: ^8.45.0
     version: 8.45.0
@@ -906,6 +909,11 @@ packages:
 
   /csstype@3.1.2:
     resolution: {integrity: sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==}
+    dev: true
+
+  /cz-git@1.7.1:
+    resolution: {integrity: sha512-NMe4REukCS7op1YA1jixRXOgII8Um2/Ii8TeyFEOISgp2ZzeobzkMOP8dXSrTQ3bvmm7YpPOdr2301yJkOJcbA==}
+    engines: {node: '>=v12.20.0'}
     dev: true
 
   /debug@4.3.4:
