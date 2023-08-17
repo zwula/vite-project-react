@@ -97,6 +97,8 @@
          }
       }
 
+---
+
 #### 统一包管理工具
 
 在项目根目录新增`preinstall.js`文件，增加以下内容：
@@ -185,5 +187,22 @@
 
 综上，我们已经完成了 `eslint` 的重新初始化过程，并解决了因为新增依赖 `eslint-plugin-react` 引起的报错。
 此时，`eslint` 已经开始生效！
+
+---
+
+**小问题，当我们执行`pnpm run lint`时，会弹出一个警告`Warning: React version not specified in eslint-plugin-react settings. See https://github.com/jsx-eslint/eslint-plugin-react#configuration .`,需要我们在`.eslintrc.cjs`新增如下配置内容：**
+
+      "settings": {
+         "react": {
+             "version":"detect"
+         }
+      }
+
+此时，在执行`pnpm run lint`就不会再出现警告。
+
+---
+
+与项目相关的`eslint`依赖（待补充）：
+1、eslint-plugin-import ------ 该插件目的在于支持ES6以上的导入/导出语法，并防止文件路径和导入名称拼写错误的问题。
 
 ---
