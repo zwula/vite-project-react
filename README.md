@@ -24,7 +24,7 @@
 
       {
          "scripts": {
-
+            "commit": "git-cz"
          },
          "config": {
             "commitizen": {
@@ -96,3 +96,94 @@
             useEmoji: true
          }
       }
+
+#### 统一包管理工具
+
+在项目根目录新增`preinstall.js`文件，增加以下内容：
+
+      const allowPM = 'pnpm'
+      const execpath = process.env.npm_execpath || ''
+      if (!new RegExp(`${allowPM}`).test(execpath)) {
+         console.warn(`\u001b[33m This repository requires using ${allowPM} as the package manager for scripts to work properly.\u001b[39m\n`)
+         process.exit(1)
+      }
+
+此时，我们会发现文件中出现以下报错提示：
+
+      'process' is not defined.  eslint(no-undef) [eslint规则方面的报错提示]
+
+合理怀疑，该报错由于eslint无法识别和 `node` 相关的变量而导致的，因此我们需要在eslint中进行相应的调整。
+当我们初始化eslint后，并在第四步 `Where does your code run?`  将 `Browser` 和 `Node` 都选中，当前报错就会消失。
+
+之后，我们在项目的`package.json`中新增一条指令`preinstall`
+
+      "scripts": {
+         // ......
+         "preinstall": "node ./preinstall.js"
+      },
+
+><br/>此时当我们使用`npm`或者`yarn`来安装包的时候，就会报错了。原理就是在`install`的时候会触发`preinstall（生命周期钩子）`这个文件里面的代码。但是在 NPM v7 以后的版本中，预安装脚本在安装依赖项后运行，这破坏了我们预期的行为。可以跟踪官方issue的处理进展：https://github.com/npm/cli/issues/2660
+<br/>
+
+配置完成后，
+如果我们通过 `npm install path -D` 安装依赖时，就会出现如下报错（并不会打印出文件中的内容）
+
+      npm ERR! Cannot read properties of null (reading 'matches')
+
+      npm ERR! A complete log of this run can be found in:
+      npm ERR!     C:\Users\yuelei\AppData\Local\npm-cache\_logs\2023-08-16T15_10_50_016Z-debug-0.log
+
+而通过 `pnpm install path -D` 安装依赖时，就可以成功安装。
+
+综上，我们就完成了  [**统一包管理工具**](#统一包管理工具)  的项目规范配置。
+
+---
+#### 配置eslint  [-官网-](https://eslint.org/docs/latest/use/getting-started)
+
+当我们在使用 `vite` 初始化项目时， `vite` 已经默认为我们集成了 `eslint` ，并在 `package.json` 文件中为我们配置好了相关 `scripts` 命令。
+
+      "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+
+但是我们需要根据项目实际情况进行调整，按照官网的教程，重新初始化`eslint`
+
+      npm init @eslint/config
+
+**注意：在初始化的第四步 `Where does your code run?`  将 `Browser` 和 `Node` 都选中，这样，eslint就可以识别和node有关的变量了，即解决了我们 `统一包管理工具` 时，遇到的 `'process' is not defined.  eslint(no-undef)` 的报错问题**
+
+重新初始化 `eslint` 后，会有以下改变：
+1、更新以下两个依赖 `@typescript-eslint/eslint-plugin` 和 `@typescript-eslint/parser`
+
+         - @typescript-eslint/eslint-plugin 6.0.0
+         + @typescript-eslint/eslint-plugin 6.3.0  更新
+         - @typescript-eslint/parser 6.0.0 
+         + @typescript-eslint/parser 6.3.0  更新
+
+2、新增依赖 `eslint-plugin-react`
+
+         + eslint-plugin-react  新增
+
+此时，当我们查看各个文件时，会发现`App.tsx`文件中出现两条报错提示，均和新增的`eslint-plugin-react`依赖相关，说明 `eslint` 中的 `eslint-plugin-react` 已经生效:
+
+1、'React' must be in scope when using JSX 。  eslint (react/react-in-jsx-scope)
+
+针对报错一: 是因为在`react v17`之前的版本，在组件中需要通过`React`对`jsx`进行解析，但是在`react v17`之后，就不再需要使用`React`对jsx进行解析了。根据报错提示，我们只需要在`.eslintrc.cjs`中新增以下代码即可
+
+      "extends": [
+         // 新增如下拓展配置
+         "plugin:react/jsx-runtime"
+      ]
+
+2、Using target="_blank" without rel="noreferrer" (which implies rel="noopener") is a security risk in older browsers: see https://mathiasbynens.github.io/rel-noopener/#recommendations eslint(react/jsx-no-target-blank)
+
+针对报错二: 为a标签新增 `rel="noreferrer"` 即可解决问题
+
+      <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
+      </a>
+
+**注意，点击报错提示中的链接部分，会跳转至对应的规则页面，我们可以根据提示理解并解决问题。**
+
+综上，我们已经完成了 `eslint` 的重新初始化过程，并解决了因为新增依赖 `eslint-plugin-react` 引起的报错。
+此时，`eslint` 已经开始生效！
+
+---
