@@ -79,6 +79,9 @@ devDependencies:
   stylelint-less:
     specifier: ^1.0.8
     version: 1.0.8(stylelint@15.10.3)
+  stylelint-order:
+    specifier: ^6.0.3
+    version: 6.0.3(stylelint@15.10.3)
   typescript:
     specifier: ^5.0.2
     version: 5.0.2

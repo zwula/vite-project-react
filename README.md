@@ -398,7 +398,7 @@
 
 ###### 使用`stylelint-order`规范css属性的书写顺序，减少浏览器的重绘重排
 
-[正常情况下，不会使用该插件，我们可以选择直接使用配置更少的`stylelint-config-recess-order`预设代替`stylelint-order`，这部分内容作为了解和体验即可]
+[使用`stylelint-config-recess-order`预设时会依赖`stylelint-order`，因此我们必须下载`stylelint-order`依赖包，只是后期可以使用预设代替长篇大论的配置项]
 
 安装`stylelint-order` [Github](https://github.com/hudochenkov/stylelint-order/tree/master)
 
@@ -446,8 +446,8 @@
                 "stylelint-config-standard",
                 "stylelint-config-recess-order"
             ],
+            "plugins": ["stylelint-order"],
              <!-- 删除之前长篇大论的配置项 -->
-            "plugins": [],
             "rules": {}
       }
 
@@ -706,9 +706,9 @@
 
 ---
 
-## 项目开发配置
+### 项目开发配置
 
-### 文件别名的配置
+#### 文件别名的配置
 
 文件别名的配置主要从以下两方面进行，
 
@@ -717,7 +717,11 @@
 
 ##### 针对打包时，文件夹别名的处理
 
-在项目根目录，`vite.config.ts`文件的配置项中，配置与文件夹别名有关的`resolve`配置项
+首先需要先安装path模块，
+
+        pnpm install path -D
+
+安装完成后，在项目根目录，`vite.config.ts`文件的配置项中，配置与文件夹别名有关的`resolve`配置项
 
         import { defineConfig } from 'vite'
         import react from '@vitejs/plugin-react'

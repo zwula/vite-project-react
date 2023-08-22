@@ -13,7 +13,8 @@
         }
     ],
     "plugins": [
-        "stylelint-less"
+        "stylelint-less",
+        "stylelint-order"
     ],
     "rules": {
         "at-rule-no-vendor-prefix": null,
