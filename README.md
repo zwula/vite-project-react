@@ -377,6 +377,8 @@
                 "style:fix": "stylelint **/*.{css,less} --fix"
         },
 
+配置完指令后，我们就可以使用指令对 `css` 样式文件进行格式化。
+
 在项目根目录新建`.stylelintignore`文件，配置stylelint忽略项
 
         # .stylelintignore
@@ -395,6 +397,8 @@
 ---
 
 ###### 使用`stylelint-order`规范css属性的书写顺序，减少浏览器的重绘重排
+
+[正常情况下，不会使用该插件，我们可以选择直接使用配置更少的`stylelint-config-recess-order`预设代替`stylelint-order`，这部分内容作为了解和体验即可]
 
 安装`stylelint-order` [Github](https://github.com/hudochenkov/stylelint-order/tree/master)
 
@@ -426,7 +430,7 @@
                 ]
     }
 
-###### 使用`stylelint-config-recess-order`预设,
+###### 使用`stylelint-config-recess-order`预设
 
 它是由社区提供的属性排序的规则，简化了我们使用`"stylelint-order"`时配置上百条css书写顺序的困扰
 
@@ -437,14 +441,15 @@
 使用
 在 `.stylelintrc.json` 中增加stylelint-config-recess-order作为扩展项
 
-        {
+      {
             "extends": [
                 "stylelint-config-standard",
                 "stylelint-config-recess-order"
             ],
-            "plugins": ["stylelint-order"],
-            "rules": { <!-- 删除之前长篇大论的配置项 --> }
-    	}
+             <!-- 删除之前长篇大论的配置项 -->
+            "plugins": [],
+            "rules": {}
+      }
 
 此时，我们已经实现了通过`styleleint`针对css的规则校验
 
