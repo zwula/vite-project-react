@@ -560,7 +560,7 @@
 > 3、Configure Git hooks path
 > <br/>
 
-执行完该命令后，该命令会在项目根目录新建一个`.husky`的文件夹,目录结构如下
+执行完该命令后，该命令会自动在项目根目录新建一个`.husky`的文件夹,目录结构如下
 
         .husky
             _ （以_命名的文件夹）
@@ -568,7 +568,7 @@
                 husky.sh
             pre-commit
 
-并且在`package.json`文件中，新增一条`scripts`指令
+并且自动在`package.json`文件中，新增一条`scripts`指令
 
         "scripts": {
                 //  else ...·
