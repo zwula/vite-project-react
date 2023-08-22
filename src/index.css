@@ -44,6 +44,10 @@ button {
   background-color: #1a1a1a;
   border: 1px solid transparent;
   border-radius: 8px;
+  -webkit-transition: border-color 0.25s;
+  -moz-transition: border-color 0.25s;
+  -ms-transition: border-color 0.25s;
+  -o-transition: border-color 0.25s;
   transition: border-color 0.25s;
 }
 

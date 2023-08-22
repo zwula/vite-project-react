@@ -524,21 +524,25 @@
 
 **注意，由于我们在项目中使用了postCSS作为样式文件的预处理器，postCSS会自动为某些属性添加不同浏览器厂商的属性前缀、属性值等等，这个操作是非常必要的，但是会和我们配置好的stylelint中的某些规则发生冲突**
 
-        "at-rule-no-vendor-prefix": true,
-        "selector-no-vendor-prefix": true,
-        "property-no-vendor-prefix": true,
-        "value-no-vendor-prefix": true
+      rules: {
+            "at-rule-no-vendor-prefix": true,
+            "selector-no-vendor-prefix": true,
+            "property-no-vendor-prefix": true,
+            "value-no-vendor-prefix": true
+      }
 
 此时，我们需要将其进行修改
 
-        // 保留动画名称前可以加浏览器前缀  如@-webkit-keyframes bounce
-        "at-rule-no-vendor-prefix": null,
-        // 保留各大浏览器不兼容的选择器前缀,如input::-webkit-input-placeholder
-        "selector-no-vendor-prefix": null,
-        // 保留各大浏览器不兼容的样式属性名前缀， 如 -moz-user-select: auto
-        "property-no-vendor-prefix": null,
-        // 保留各大浏览器不兼容的样式属性值前缀，display: -webkit-box;
-        "value-no-vendor-prefix": null
+      rules: {
+            // 保留动画名称前可以加浏览器前缀  如@-webkit-keyframes bounce
+            "at-rule-no-vendor-prefix": null,
+            // 保留各大浏览器不兼容的选择器前缀,      input::-webkit-input-placeholder
+            "selector-no-vendor-prefix": null,
+            // 保留各大浏览器不兼容的样式属性名前缀， 如 -moz-user-select: auto
+            "property-no-vendor-prefix": null,
+            // 保留各大浏览器不兼容的样式属性值前缀，display: -webkit-box;
+            "value-no-vendor-prefix": null
+      }
 
 ---
 
