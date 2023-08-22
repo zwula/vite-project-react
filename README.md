@@ -494,12 +494,12 @@
 
 在`.stylelinrc.json`配置针对`.less`文件的处理方式
 
-        "overrides": [
-    	   {
+      "overrides": [
+            {
                 "files": ["*.less", "**/*.less"],
                 "customSyntax": "postcss-less"
-    	   }
-        ]
+            }
+      ]
 
 配置完成后，我们发现上述报错就消失了。
 此时，stylelint已经知道如何处理`.less`文件，并且识别相关的less语法。
