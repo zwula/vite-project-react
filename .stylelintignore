@@ -1,0 +1,7 @@
+# 文件夹
+node_modules
+dist
+
+# 其他类型文件
+# 久的不需要打包的样式库
+*.min.css
