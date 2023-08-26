@@ -8,12 +8,18 @@ module.exports = {
 		react: {
 			version: 'detect',
 		},
+		'import/resolver': {
+			typescript: true, // this loads <rootdir>/tsconfig.json to eslint
+			node: true,
+		},
 	},
 	extends: [
 		'eslint:recommended',
 		'plugin:@typescript-eslint/recommended',
 		'plugin:react/recommended',
 		'plugin:react/jsx-runtime',
+		'plugin:import/recommended',
+		'plugin:import/typescript',
 		'plugin:prettier/recommended',
 	],
 	overrides: [
@@ -44,5 +50,7 @@ module.exports = {
 				tabWidth: 4,
 			},
 		],
+		'import/default': 0, // 关闭检测默认导出
+		'import/no-absolute-path': 0, // 关闭禁止使用绝对路径导入模块
 	},
 }

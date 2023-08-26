@@ -132,7 +132,7 @@
 如果我们通过 `npm install path -D` 安装依赖时，就会出现如下报错（并不会打印出文件中的内容）,虽然报错的这个行为并不是我们所预期的，但是也确实达到了我们想要统一包管理工具的目的。
 
       npm ERR! Cannot read properties of null (reading 'matches')
-
+    
       npm ERR! A complete log of this run can be found in:
       npm ERR!     C:\Users\yuelei\AppData\Local\npm-cache\_logs\2023-08-16T15_10_50_016Z-debug-0.log
 
@@ -306,9 +306,9 @@
       {
             "extends": ["plugin:prettier/recommended"]
       }
-
+    
       就相当于
-
+    
       {
             "extends": ["prettier"]，
             "plugin":["prettier"],
@@ -370,7 +370,7 @@
 **注意，初始化stylelint时，自动化命令并没有为我们配置与`stylelint`相关的`scripts`指令，也没有为我们添加对应的忽略文件**
 
         # package.json
-
+    
         "scripts": {
                 <!-- 其他指令 -->
                 "style": "stylelint **/*.{css,less}",
@@ -382,15 +382,15 @@
 在项目根目录新建`.stylelintignore`文件，配置stylelint忽略项
 
         # .stylelintignore
-
+    
         # 文件夹
         node_modules
         dist
         test
         lib
-
+    
         # 其他类型文件
-
+    
         # 久的不需要打包的样式库
         *.min.css
 
@@ -480,7 +480,7 @@
 所以，当我们使用`pnpm run style` 或者 `pnpm run style：fix`时，会弹出以下报错：
 
         D:\wilson\vite-project-react\src\App.less: you should use the "customSyntax" option when linting something other than CSS
-
+    
         src/App.less
         1:1 ✖ Unexpected unknown at-rule "@color:"
 
@@ -583,7 +583,7 @@
 
         #!/usr/bin/env sh
         . "$(dirname -- "$0")/_/husky.sh"
-
+    
         npm run lint:fix
         npm run style:fix
         <!-- 格式化代码后，将自动格式化代码后的文件添加到暂存库，随着本次提交一起commit, 但是会产生一个问题，就是连带其他不想被提交的文件也会一起被提交进去 因此不建议添加 -->
@@ -660,7 +660,7 @@
 
         #!/usr/bin/env sh
         . "$(dirname -- "$0")/_/husky.sh"
-
+    
         npm run lint:fix
         npm run style:fix
         <!-- 格式化代码后，将自动格式化代码后的文件添加到暂存库，随着本次提交一起commit, 但是会产生一个问题，就是连带其他不想被提交的文件也会一起被提交进去 因此不建议添加 -->
@@ -726,7 +726,7 @@
         import { defineConfig } from 'vite'
         import react from '@vitejs/plugin-react'
         ++ import path from 'path'
-
+    
         // https://vitejs.dev/config/
         export default defineConfig({
                 plugins: [react()],
@@ -776,3 +776,473 @@
 我们配置 `eslint-plugin-import` 这个插件，这个插件支持ES2015+（ES6+）导入/导出语法的覆盖，并防止文件路径和导入名称的拼写问题。
 
 但是这个插件，其默认是不支持文件夹别名的，当其遇到文件夹别名的时候，不知道要如何进行处理，因此我们需要 `针对插件的编译检查` 进行相关的配置
+
+安装 `eslint-plugin-import` 依赖 [官网](https://www.npmjs.com/package/eslint-plugin-import)
+
+        pnpm install eslint-plugin-import -D
+
+在 `.eslintrc.cjs` 文件中增加如下配置
+
+        extends: [
+                <!-- 新增'plugin:import/recommended' -->
+                'plugin:import/recommended'，
+        ]，
+
+这个时候我们会发现，初始化项目的App.tsx中提示关于文件引入的报错提示。
+
+        Unable to resolve path to module '@/App.less'.eslint (import/no-unresolved)
+        Unable to resolve path to module '/vite.svg'.eslint (import/no-unresolved)
+
+可以看出，该插件默认不支持根路径 `"/"` 和文件夹别名 `"@"` ，因此需要我们进行配置调整，解决这两个问题。
+
+###### 针对 `Unable to resolve path to module '@/App.less'.eslint (import/no-unresolved)` 不识别文件夹别名的情况
+
+参考官网，安装 `eslint-import-resolver-typescript`， 并进行相应的配置。
+
+安装 `eslint-import-resolver-typescript`
+
+        pnpm install eslint-import-resolver-typescript -D
+
+在 `.eslintrc.cjs` 文件中增加如下配置
+
+        extends: [
+                <!-- 新增'plugin:import/recommended' -->
+                'plugin:import/recommended'，
+                'plugin:import/typescript'，
+        ]，
+    
+        ... ... 其他配置项
+    
+        settings: {
+                'import/resolver': {
+                        typescript: true，   // this loads <rootdir>/tsconfig.json to eslint
+                        node:true
+                }，
+        }，
+
+增加以上配置后， 会读取当前项目根目录的`tsconfig.json`中的配置内容来处理对应的文件关系.
+
+**但是当我们增加了以上配置后，会发现main.tsx中提示报错 `No default export found in imported module "react-dom/client".eslint (import/default)`， 但是我们在react项目中经常要使用`import react, {useState} from "react"`或者`import ReactDOM from 'react-dom/client'`这种写法，因此我们需要取消这条eslint规则的提示报错**
+
+        rules: {
+                'import/default': 0,  // 关闭检测默认导出
+                'import/no-absolute-path': 0,  // 关闭禁止使用绝对路径导入模块
+        }
+
+<br />
+###### 针对 `Unable to resolve path to module '/vite.svg'.eslint (import/no-unresolved)` 不识别绝对路径的情况
+
+【暂时没找到合适的解决方法， 先避免这种写法】
+
+---
+
+#### 配置项目环境变量 [参考](https://it.zsyts.cn/155598.html)
+
+在项目开发中，我们至少会经历开发环境、测试环境和生产环境三个阶段，每个阶段请求的状态不尽相同，若手动切换接口地址是相当繁琐且容易出错，于是配置环境变量的需求应运而生，我们只需要提前配置好不同环境所需要的状态，把环境改变时，状态切换的工作交给vite即可。
+
+##### 整合环境变量文件目录
+
+通过`vite.config.ts`中的`envDir`配置环境变量的目录，将他们整合在一起。
+
+        envDir: 'env'， // env为目录名
+
+在项目根目录下，创建`env`文件夹，在该文件夹中组织不同环境下的环境变量文件 
+
+##### 配置不同环境下的环境变量文件
+
+默认情况下
+
+npm run dev 会加载 .env 和 .env.development 内的配置
+npm run build 会加载 .env 和 .env.production 内的配置
+
+**在浏览器环境中**，加载的环境变量会通过 import.meta.env 以字符串形式暴露给客户端源码。为了防止意外地将一些环境变量泄漏到客户端，只有以 VITE\_ 为前缀的变量才会暴露给经过 vite 处理的代码。
+
+通过 import.meta.env 获取到的环境变量，主要包括以下两种类型：
+1、vite内置的环境变量
+
+vite内置了5个环境变量，分别为：
+
+BASE_URL --- 可以通过`vite.config.ts`文件中`base`配置项进行配置修改， **尽量不要去改这个值**
+DEV --- boolean，表示当前环境是否是DEV环境
+PROD --- boolean，表示当前环境是否是PROD环境
+SSR --- boolean，表示当前环境是否是SSR环境
+MODE --- string， 表示当前mode值
+
+2、自定义的环境变量
+VITE_*XXXX_YYYY：只有以 VITE* 为前缀的变量才会暴露给经过 vite 处理的代码。
+
+当我们运行 `pnpm run dev` 时，mode属于development，因此.env和 .env.development中以VITE\_ 为前缀的变量都会被识别。
+
+当然，我们也可以通过`--mode`自定义环境，并读取当前自定义环境的环境变量，具体可以参考上面给出的参考网址。
+
+**注意**
+**process.env是Nodejs提供的一个API，其返回一个对象，包含了当前Shell的所有环境变量，只能在node环境进行访问。**
+
+但是在vite构建的项目中，业务代码是运行在浏览器环境中的，是不能识别`process.env`的，因此在业务代码中才需要通过使用`import.meta.env`获取当前环境的环境对象中的环境变量。而vite的配置文件(`vite.config.ts`)，则是运行在node环境中的，是可以识别 `process.env` 的，因此在`vite.config.ts`中，可以直接通过`process.env`获取当前环境的环境对象中的环境变量。
+
+#### 配置项目的全局样式文件 --- global.less
+
+在`src/assets`文件夹下，新建一个`global.less`文件，作为全局的less样式文件：
+
+该文件主要的作用是：
+
+1. 定义可以全局使用的less变量
+2. 定义可以全局使用的less混入
+3. 清除默认样式
+
+为了更直观的组织代码，我们将global.less按照作用拆分为三个文件 `variable.less` 、`mixin.less` 、`reset.less`，并最终交由`global.less`文件统一管理
+
+新建`variable.less`文件 （代码篇幅较长，不在这里进行展示了）
+新建`mixin.less`文件 （代码篇幅较长，不在这里进行展示了）
+
+交由`global.less`统一管理
+
+        /*
+        ** 全局的样式文件
+        ** 1、variable - 定义全局css 变量
+        ** 2、lib - 定义全局css mixin混入
+        */
+    
+        @import '@/assets/styles/variable.less';
+        @import '@/assets/styles/mixin.less';
+
+**注意**
+当我们使用 `@import '@/assets/styles/variable.less';`这种写法时，stylelint会报错提示
+
+        Expected "'@/assets/styles/variable.less'" to be "url('@/assets/styles/variable.less')" (import-notation)Stylelintimport-notation
+
+意思是默认情况下，更推荐使用 `@import url("@/assets/styles/variable.less")`这种url的写法，但是在项目中，更常用的是string的写法，因此我们可以在`.stylelintrc.json`进行如下的配置更改，解决这个报错提示。
+
+        "rules": {
+                <!-- 其他rules -->
+                "import-notation": "string"
+        }
+
+最后，我们将`global.less`文件作为全局的less文件进行使用，在`vite.config.ts`中，增加对样式文件的配置：
+
+        css: {
+                preprocessorOptions: {
+                        less: {
+                                // 引入全局变量
+                                additionalData: `@import "@/assets/styles/global.less";`，
+                        }，
+                }，
+        }，
+
+这样，我们就可以在业务代码中直接使用全局定义的变量和mixin。
+
+#### 配置项目中使用svg图标 [官网](https://github.com/vbenjs/vite-plugin-svg-icons/tree/main#readme)
+
+##### 配置`vite-plugin-svg-icons`
+
+安装 `vite-plugin-svg-icons`
+
+        pnpm install vite-plugin-svg-icons -D
+
+在 `vite.config.ts` 配置插件的使用
+
+        import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+        import path from 'path'
+    
+        export default () => {
+                return {
+                        plugins: [
+                                createSvgIconsPlugin({
+                                        // Specify the icon folder to be cached
+                                        iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
+                                        // Specify symbolId format
+                                        symbolId: 'icon-[dir]-[name]',
+                                }),
+                        ],
+                }
+        }
+
+在入口文件 `main.tsx` 中导入
+
+        import 'virtual:svg-icons-register'
+
+##### 在项目中使用svg图标
+
+###### 创建SVG图标
+
+首先，在图标库网站或者某个图标的svg代码，此处以iconfont为例，登录[iconfont官网](https://www.iconfont.cn/collections/detail?spm=a313x.collections_index.i1.d9df05512.c1923a81EV2wf1&cid=45549)，选择某个图标(例：delete)，点击下载，选择`"复制SVG代码"`。
+
+之后，我们在当前项目 `src/assets` 文件夹中，新建 `icons` 文件夹，在新建的 `icons` 文件夹创建 `***.svg` SVG图标文件(例：delete.svg)， 然后将刚才复制的SVG代码粘贴到这个svg文件中，这样我们就创建了一个SVG图标(例：delete.svg)。
+
+###### 在组件中使用SVG图标（以新建的delete.svg为例）
+
+在需要展示SVG图标的组件中，使用之前创建的svg图标
+
+        <svg>
+                <use href="#icon-delete" fill="red"></use>
+        </svg>
+
+我们发现这样使用起来及其不方便，我们可以将其封装为`SvgIcon`组件以方便在组件中进行使用。
+
+**封装组件前的准备**
+
+统一组件封装的写法，更方便进行规范话的开发，主要参考了这篇文件[链接](https://juejin.cn/post/7195948584855945272)
+
+**以下是文章中，为了统一组件封装的写法，所需要的工具函数文件，这里留存一份作为备份**
+
+需要提前下载 `classnames` 这个依赖库
+
+        pnpm install classnames -D
+
+`src/utils/native-props.ts`
+
+        # utils/native-props.ts
+    
+        import classNames from 'classnames'
+        import type { CSSProperties, ReactElement } from 'react'
+        import { cloneElement } from 'react'
+    
+        export type NativeProps<S extends string = never> = {
+                className?: string
+                style?: CSSProperties & Partial<Record<S, string>>
+        }
+    
+        export function withNativeProps<P extends NativeProps>(
+                props: P,
+                element: ReactElement,
+        ) {
+                const p = {
+                        ...element.props,
+                }
+                if (props.className) {
+                        p.className = classNames(element.props.className, props.className)
+                }
+                if (props.style) {
+                        p.style = {
+                                ...p.style,
+                                ...props.style,
+                        }
+                }
+                return cloneElement(element, p)
+        }
+
+`src/utils/omit.ts`
+
+        #utils/omit.ts
+    
+        /** 删除一个对象中的key */
+        export default function omit<T extends object, K extends keyof T>(
+                obj: T,
+                keys: Array<K | string>, // string 为了某些没有声明的属性被omit
+        ): Omit<T, K> {
+                const clone = {
+                        ...obj,
+                }
+                keys.forEach((key) => {
+                        if ((key as K) in clone) {
+                                delete clone[key as K]
+                        }
+                })
+                return clone
+        }
+
+`src/hooks/use-merge-props.ts`
+
+        import { useMemo } from 'react'
+        import omit from '@/utils/omit'
+    
+        export type MergePropsOptions = {
+                _ignorePropsFromGlobal?: boolean
+        }
+    
+        /** 将某些属性变为必选 */
+        type RequireKey<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: T[P] }
+    
+        export default function useMergeProps<PropsType, K extends keyof PropsType>(
+                componentProps: PropsType & MergePropsOptions,
+                defaultProps: Partial<PropsType>,
+                globalComponentConfig: Partial<PropsType> = {},
+        ): RequireKey<PropsType, K> {
+                const { _ignorePropsFromGlobal } = componentProps
+                const _defaultProps = useMemo(() => {
+                        return {
+                                ...defaultProps,
+                                ...(_ignorePropsFromGlobal ? {} : globalComponentConfig),
+                        }
+                }, [defaultProps, globalComponentConfig, _ignorePropsFromGlobal])
+    
+                const props = useMemo(() => {
+                        const mProps = omit(componentProps, [
+                                '_ignorePropsFromGlobal',
+                        ]) as PropsType
+    
+                        for (const propName in _defaultProps) {
+                                if (mProps[propName] === undefined) {
+                                        mProps[propName] = _defaultProps[propName]!
+                                }
+                        }
+    
+                        return mProps
+                }, [componentProps, _defaultProps])
+    
+                return props as RequireKey<PropsType, K>
+        }
+
+以SvgIcon组件的封装为例，实践一下 `统一组件封装的写法`
+
+        import React from 'react'
+        import { NativeProps, withNativeProps } from '@/utils/native-props'
+        import useMergeProps from '@/hooks/use-merge-props'
+    
+        const classPrefix = `com-SvgIcon`
+    
+        export type SvgIconProps = {
+                color?: string
+                iconPrefix?: string
+                icon: string
+                width?: string
+                height?: string
+        } & NativeProps
+    
+        const defaultProps = {
+                color: '',
+                iconPrefix: '#icon-',
+                icon: '',
+                width: '16px',
+                height: '16px',
+        }
+        type RequireType = keyof typeof defaultProps
+    
+        const SvgIcon: React.FC<SvgIconProps> = (comProps: SvgIconProps) => {
+                const props = useMergeProps<SvgIconProps, RequireType>(
+                        comProps,
+                        defaultProps,
+                )
+                const { ...ret } = props
+    
+                return withNativeProps(
+                        ret,
+                        <div className={classPrefix}>
+                                <svg style={{ width: props.width, height: props.height }}>
+                                        <use
+                                                href={props.iconPrefix + props.icon}
+                                                fill={props.color}
+                                        ></use>
+                                </svg>
+                        </div>,
+                )
+        }
+    
+        export default SvgIcon
+
+封装完成后，我们就可以更方便的给项目中添加SVG图标
+
+        import SvgIcon from './components/svg-icon'
+        ...
+        ...
+        <SvgIcon icon='delete'></SvgIcon>
+        <SvgIcon icon='clock'></SvgIcon>
+        <SvgIcon icon='alipay'></SvgIcon>
+
+**如果添加了新的SVG图标不显示的话，重新 `pnpm run dev` 编译一下项目即可**
+
+#### 配置MockJs
+
+##### 配置mockjs
+
+安装 `mockjs` 和 **`vite-plugin-mock@2.9.6`** 依赖
+
+        pnpm install mockjs
+        pnpm install vite-plugin-mock@2.9.6 -D
+
+在 `vite.config.json` 中增加以下配置内容
+
+        import { UserConfigExport, ConfigEnv } from 'vite'
+        import { viteMockServe } from 'vite-plugin-mock'
+    
+        <!-- 注意，写法已经不一样了 -->
+        export default ({ command }: ConfigEnv): UserConfigExport => {
+                return {
+                        plugins: [
+                                // ... ... 其他配置项
+                                viteMockServe({
+                                        // default
+                                       localEnabled: command === 'serve', // 保证开发阶段可以使用mock，生产环境禁止开启
+                                }),
+                        ],
+                }
+        }
+
+##### 创建业务接口
+
+在项目根目录下新建 `mock` 文件夹，并在文件夹中新建 `user.ts` 文件， 增加以下内容
+
+        import { MockMethod } from "vite-plugin-mock"
+    
+        const createUsers = () => {
+                return [
+                        {
+                                id: 1,
+                                username: "admin",
+                                password: "admin123",
+                                avatar: "",
+                                desc: "平台管理员",
+                                roles: ["平台管理员"],
+                                buttons: ["cuser.detail"],
+                                routes: ["home"],
+                                token: "admin token",
+                        },
+                        {
+                                id: 2,
+                                username: "system",
+                                password: "system123",
+                                avatar: "",
+                                desc: "系统管理员",
+                                roles: ["系统管理员"],
+                                buttons: ["cuser.detail", "cuser.user"],
+                                routes: ["home"],
+                                token: "system token",
+                        },
+                ]
+        }
+    
+        export default [
+                {
+                        url: "/api/login",
+                        method: "post",
+                        response: ({ body }) => {
+                                const { username, password } = body
+                                const checkUser = createUsers().find((user) => {
+                                        return user.username === username && user.password === password
+                                })
+                                if (!checkUser) {
+                                        return {
+                                                status: 201,
+                                                msg: "用户名或密码不正确",
+                                        }
+                                }
+                                return {
+                                        status: 200,
+                                        data: {
+                                                token: checkUser.token,
+                                        },
+                                }
+                        },
+                },
+        ] as MockMethod[]
+
+相当于我们定义了一个 `"/api/login"` 接口， 访问该接口会执行对应的逻辑函数，并返回其结果。
+
+##### 测试 `mockjs` 是否配置成功
+
+安装 `axios` 依赖
+
+        pnpm install axios
+
+在 `App.tsx` 中增加以下代码，请求我们创建的 `"/api/login"` 业务接口，打印返回结果
+
+        useEffect(() => {
+                // 测试axios
+                axios
+                .post("/api/login", { username: "admin", password: "admin123" })
+                .then((res) => {
+                        console.log("🔥 >> file: App.tsx:14 >> axios.post >> res:", res)
+                })
+        }, [])
+
+可以发现 `mockjs` 已经配置成功，我们可以成功请求 `"/api/login"` 接口，并获取对应的结果。
