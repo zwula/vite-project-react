@@ -132,7 +132,7 @@
 如果我们通过 `npm install path -D` 安装依赖时，就会出现如下报错（并不会打印出文件中的内容）,虽然报错的这个行为并不是我们所预期的，但是也确实达到了我们想要统一包管理工具的目的。
 
       npm ERR! Cannot read properties of null (reading 'matches')
-    
+
       npm ERR! A complete log of this run can be found in:
       npm ERR!     C:\Users\yuelei\AppData\Local\npm-cache\_logs\2023-08-16T15_10_50_016Z-debug-0.log
 
@@ -306,9 +306,9 @@
       {
             "extends": ["plugin:prettier/recommended"]
       }
-    
+
       就相当于
-    
+
       {
             "extends": ["prettier"]，
             "plugin":["prettier"],
@@ -370,7 +370,7 @@
 **注意，初始化stylelint时，自动化命令并没有为我们配置与`stylelint`相关的`scripts`指令，也没有为我们添加对应的忽略文件**
 
         # package.json
-    
+
         "scripts": {
                 <!-- 其他指令 -->
                 "style": "stylelint **/*.{css,less}",
@@ -382,15 +382,15 @@
 在项目根目录新建`.stylelintignore`文件，配置stylelint忽略项
 
         # .stylelintignore
-    
+
         # 文件夹
         node_modules
         dist
         test
         lib
-    
+
         # 其他类型文件
-    
+
         # 久的不需要打包的样式库
         *.min.css
 
@@ -480,7 +480,7 @@
 所以，当我们使用`pnpm run style` 或者 `pnpm run style：fix`时，会弹出以下报错：
 
         D:\wilson\vite-project-react\src\App.less: you should use the "customSyntax" option when linting something other than CSS
-    
+
         src/App.less
         1:1 ✖ Unexpected unknown at-rule "@color:"
 
@@ -583,7 +583,7 @@
 
         #!/usr/bin/env sh
         . "$(dirname -- "$0")/_/husky.sh"
-    
+
         npm run lint:fix
         npm run style:fix
         <!-- 格式化代码后，将自动格式化代码后的文件添加到暂存库，随着本次提交一起commit, 但是会产生一个问题，就是连带其他不想被提交的文件也会一起被提交进去 因此不建议添加 -->
@@ -660,7 +660,7 @@
 
         #!/usr/bin/env sh
         . "$(dirname -- "$0")/_/husky.sh"
-    
+
         npm run lint:fix
         npm run style:fix
         <!-- 格式化代码后，将自动格式化代码后的文件添加到暂存库，随着本次提交一起commit, 但是会产生一个问题，就是连带其他不想被提交的文件也会一起被提交进去 因此不建议添加 -->
@@ -726,7 +726,7 @@
         import { defineConfig } from 'vite'
         import react from '@vitejs/plugin-react'
         ++ import path from 'path'
-    
+
         // https://vitejs.dev/config/
         export default defineConfig({
                 plugins: [react()],
@@ -810,9 +810,9 @@
                 'plugin:import/recommended'，
                 'plugin:import/typescript'，
         ]，
-    
+
         ... ... 其他配置项
-    
+
         settings: {
                 'import/resolver': {
                         typescript: true，   // this loads <rootdir>/tsconfig.json to eslint
@@ -902,7 +902,7 @@ vite内置了5个环境变量，分别为：
         ** 1、variable - 定义全局css 变量
         ** 2、mixin - 定义全局css mixin混入
         */
-    
+
         @import '@/assets/styles/variable.less';
         @import '@/assets/styles/mixin.less';
 
@@ -943,7 +943,7 @@ vite内置了5个环境变量，分别为：
 
         import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
         import path from 'path'
-    
+
         export default () => {
                 return {
                         plugins: [
@@ -979,8 +979,6 @@ vite内置了5个环境变量，分别为：
 
 我们发现这样使用起来及其不方便，我们可以将其封装为`SvgIcon`组件以方便在组件中进行使用。
 
-
-
 **封装组件前的准备**
 
 统一组件封装的写法，更方便进行规范话的开发，主要参考了这篇文件[链接](https://juejin.cn/post/7195948584855945272)
@@ -994,16 +992,16 @@ vite内置了5个环境变量，分别为：
 `src/utils/native-props.ts`
 
         # utils/native-props.ts
-    
+
         import classNames from 'classnames'
         import type { CSSProperties, ReactElement } from 'react'
         import { cloneElement } from 'react'
-    
+
         export type NativeProps<S extends string = never> = {
                 className?: string
                 style?: CSSProperties & Partial<Record<S, string>>
         }
-    
+
         export function withNativeProps<P extends NativeProps>(
                 props: P,
                 element: ReactElement,
@@ -1026,7 +1024,7 @@ vite内置了5个环境变量，分别为：
 `src/utils/omit.ts`
 
         #utils/omit.ts
-    
+
         /** 删除一个对象中的key */
         export default function omit<T extends object, K extends keyof T>(
                 obj: T,
@@ -1047,14 +1045,14 @@ vite内置了5个环境变量，分别为：
 
         import { useMemo } from 'react'
         import omit from '@/utils/omit'
-    
+
         export type MergePropsOptions = {
                 _ignorePropsFromGlobal?: boolean
         }
-    
+
         /** 将某些属性变为必选 */
         type RequireKey<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: T[P] }
-    
+
         export default function useMergeProps<PropsType, K extends keyof PropsType>(
                 componentProps: PropsType & MergePropsOptions,
                 defaultProps: Partial<PropsType>,
@@ -1067,32 +1065,74 @@ vite内置了5个环境变量，分别为：
                                 ...(_ignorePropsFromGlobal ? {} : globalComponentConfig),
                         }
                 }, [defaultProps, globalComponentConfig, _ignorePropsFromGlobal])
-    
+
                 const props = useMemo(() => {
                         const mProps = omit(componentProps, [
                                 '_ignorePropsFromGlobal',
                         ]) as PropsType
-    
+
                         for (const propName in _defaultProps) {
                                 if (mProps[propName] === undefined) {
                                         mProps[propName] = _defaultProps[propName]!
                                 }
                         }
-    
+
                         return mProps
                 }, [componentProps, _defaultProps])
-    
+
                 return props as RequireKey<PropsType, K>
         }
+
+配置用户代码片段
+
+\*\*.tsx部分
+
+        "create typescript react component": {
+                "prefix": "ctrc",
+                "body": [
+                        "import React, { useState, useEffect } from 'react';",
+                        "import { NativeProps, withNativeProps } from '@/utils/native-props;",
+                        "import useMergeProps from '@/hooks/use-merge-props';",
+                        "import './index.less';",
+                        "",
+                        "const classPrefix = `com${2}-${1}`;",
+                        "",
+                        "export type ${1}Props = { ",
+                        "",
+                        "} & NativeProps",
+                        "",
+                        "const defaultProps = {",
+                        "  ",
+                        "}",
+                        "type RequireType = keyof typeof defaultProps",
+                        "",
+                        "const ${1} = (comProps: ${1}Props) => {",
+                        "  const props = useMergeProps<${1}Props, RequireType>(comProps, defaultProps)",
+                        "  const { ...ret } = props",
+                        "  ",
+                        "  return withNativeProps(",
+                        "    ret,",
+                        "    <div className={classPrefix}>",
+                        "      ",
+                        "    </div>",
+                        "  )",
+                        "}",
+                        "",
+                        "export default ${1}"
+                ],
+                "description": "create ts reactIframe component"
+        },
+
+至此，封装组件前的准备工作就已经完成了，接下来就可以封装SvgIcon组件了
 
 以SvgIcon组件的封装为例，实践一下 `统一组件封装的写法`
 
         import React from 'react'
         import { NativeProps, withNativeProps } from '@/utils/native-props'
         import useMergeProps from '@/hooks/use-merge-props'
-    
+
         const classPrefix = `com-SvgIcon`
-    
+
         export type SvgIconProps = {
                 color?: string
                 iconPrefix?: string
@@ -1100,7 +1140,7 @@ vite内置了5个环境变量，分别为：
                 width?: string
                 height?: string
         } & NativeProps
-    
+
         const defaultProps = {
                 color: '',
                 iconPrefix: '#icon-',
@@ -1109,14 +1149,14 @@ vite内置了5个环境变量，分别为：
                 height: '16px',
         }
         type RequireType = keyof typeof defaultProps
-    
+
         const SvgIcon: React.FC<SvgIconProps> = (comProps: SvgIconProps) => {
                 const props = useMergeProps<SvgIconProps, RequireType>(
                         comProps,
                         defaultProps,
                 )
                 const { ...ret } = props
-    
+
                 return withNativeProps(
                         ret,
                         <div className={classPrefix}>
@@ -1129,7 +1169,7 @@ vite内置了5个环境变量，分别为：
                         </div>,
                 )
         }
-    
+
         export default SvgIcon
 
 封装完成后，我们就可以更方便的给项目中添加SVG图标
@@ -1156,7 +1196,7 @@ vite内置了5个环境变量，分别为：
 
         import { UserConfigExport, ConfigEnv } from 'vite'
         import { viteMockServe } from 'vite-plugin-mock'
-    
+
         <!-- 注意，写法已经不一样了 -->
         export default ({ command }: ConfigEnv): UserConfigExport => {
                 return {
@@ -1175,7 +1215,7 @@ vite内置了5个环境变量，分别为：
 在项目根目录下新建 `mock` 文件夹，并在文件夹中新建 `user.ts` 文件， 增加以下内容
 
         import { MockMethod } from "vite-plugin-mock"
-    
+
         const createUsers = () => {
                 return [
                         {
@@ -1202,7 +1242,7 @@ vite内置了5个环境变量，分别为：
                         },
                 ]
         }
-    
+
         export default [
                 {
                         url: "/api/login",

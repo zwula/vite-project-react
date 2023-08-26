@@ -3,11 +3,11 @@ import reactLogo from './assets/react.svg'
 // eslint-disable-next-line import/no-unresolved
 import viteLogo from '/vite.svg'
 import '@/App.less'
+import SvgIcon from './components/svg-icon'
 
 function App() {
 	const [count, setCount] = useState(0)
 
-	console.log(import.meta.env)
 	return (
 		<>
 			<div>
@@ -34,9 +34,7 @@ function App() {
 			<p className="read-the-docs">
 				Click on the Vite and React logos to learn more
 			</p>
-			<svg style={{ width: '22px', height: '22px' }}>
-				<use href="#icon-download" fill="red"></use>
-			</svg>
+			<SvgIcon icon="download" color="red" />
 		</>
 	)
 }
