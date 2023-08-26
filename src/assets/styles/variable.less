@@ -1,0 +1,173 @@
+/* 
+    项目主题样式
+*/
+@dm-font-family: -apple-system, blinkmacsystemfont, "Helvetica Neue", helvetica,
+  segoe ui, arial, roboto, "PingFang SC", "miui", "Hiragino Sans GB",
+  "Microsoft Yahei";
+
+/* 
+    dpr 
+       -pc 端时  dpr = 1 
+       -m  端时  dpr = 750 / 375 = 2
+*/
+@dpr: 1;
+
+/* 
+ ** @name FontSize
+*/
+@dm-font-size-24x: 24px * @dpr;
+@dm-font-size-22x: 22px * @dpr;
+@dm-font-size-20x: 20px * @dpr;
+@dm-font-size-18x: 18px * @dpr;
+@dm-font-size-16x: 16px * @dpr; // 标准
+@dm-font-size-14x: 14px * @dpr;
+@dm-font-size-12x: 12px * @dpr;
+@dm-font-size-10x: 10px * @dpr;
+
+@dm-font-size-h1-38x: 38px; // H1 标签所使用的字号
+@dm-font-size-h2-30x: 30px; // h2 标签所使用的字号
+@dm-font-size-h3-24x: 24px; // h3 标签使用的字号
+@dm-font-size-h4-20x: 20px; // h4 标签使用的字号
+@dm-font-size-h5-16x: 16px; // h5 标签使用的字号
+
+/* 
+ ** @name IconFontSize  与字体保持一直
+*/
+@dm-icon-size-24x: 24px * @dpr;
+@dm-icon-size-22x: 22px * @dpr;
+@dm-icon-size-20x: 20px * @dpr;
+@dm-icon-size-18x: 18px * @dpr;
+@dm-icon-size-16x: 16px * @dpr; // 标准，由此往两边发散
+@dm-icon-size-14x: 14px * @dpr;
+@dm-icon-size-12x: 12px * @dpr;
+@dm-icon-size-10x: 10px * @dpr;
+
+/* 
+ ** @name Padding
+*/
+@dm-padding-base: 4px;
+@dm-padding-28x: @dm-padding-base * 7;
+@dm-padding-24x: @dm-padding-base * 6;
+@dm-padding-20x: @dm-padding-base * 5;
+@dm-padding-16x: @dm-padding-base * 4; // 标准，由此往两边发散
+@dm-padding-12x: @dm-padding-base * 3;
+@dm-padding-8x: @dm-padding-base * 2;
+@dm-padding-4x: @dm-padding-base * 1;
+
+/* 
+ ** @name Margin
+*/
+@dm-margin-base: 4px;
+@dm-margin-28x: @dm-margin-base * 7;
+@dm-margin-24x: @dm-margin-base * 6;
+@dm-margin-20x: @dm-margin-base * 5;
+@dm-margin-16x: @dm-margin-base * 4; // 标准，由此往两边发散
+@dm-margin-12x: @dm-margin-base * 3;
+@dm-margin-8x: @dm-margin-base * 2;
+@dm-margin-4x: @dm-margin-base * 1;
+
+/*
+ ** @name Color(前景色)
+*/
+@dm-color-primary: #ec3834; // 用于表示品牌主题色
+@dm-color-secondary: #0185f1; // 用于表示品牌辅助色
+@dm-color-tertiary: #00a790; // 用于表示品牌辅助色
+
+@dm-color-info: #1677ff; // 用于表示操作信息
+@dm-color-success: #00b578; // 用于表示操作信息
+@dm-color-warning: #ff8f1f; // 用于表示操作信息
+@dm-color-danger: #ff3141; // 用于表示操作失败
+
+@dm-color-main: @dm-color-primary; // 主题色
+@dm-color-sub: @dm-color-secondary; // 主题辅助色
+@dm-color-other: @dm-color-tertiary; // 主题辅助色
+
+/*
+ ** @name BackgroundColor(背景色)
+*/
+@dm-bgcolor-main: #f5f5f5; // 主
+@dm-bgcolor-sub: #ffffff; // 副
+@dm-bgcolor-button-main: @dm-color-main; // 按钮主背景色
+@dm-bgcolor-button-sub: @dm-color-sub; // 按钮副背景色
+@dm-bgcolor-button-white: #ffffff; // 按钮副背景色
+@dm-bgcolor-mask: rgba(0, 0, 0, 0.45); // 浮层的背景蒙层颜色
+
+/*
+ ** @name TextColor
+*/
+// 普通文本颜色
+@dm-textcolor-primary: 0; // 文字默认颜色
+@dm-textcolor-secondary: 0; // 作为第二梯度的文本色
+@dm-textcolor-tertiary: 0; // 作为第三梯度的文本色
+@dm-textcolor-quaternary: 0; // 作为第四梯度的文本色
+@dm-textcolor-emphasis: #3c3c3c; // 强调字体色
+@dm-textcolor-main: #3c3c3c; // 主体字体色
+@dm-textcolor-sub: #787878; // 辅助字体色
+@dm-textcolor-other: #3c3c3c; // 字体色补充色 tips什么的
+@dm-textcolor-disabled: rgba(0, 0, 0, 0.25); // 禁用状态下的字体颜色
+// 文本按钮颜色
+@dm-textcolor-button-main: #ffffff; // 按钮字体主颜色
+@dm-textcolor-button-sub: #ffffff; // 按钮字体副颜色
+// 文本超链颜色
+@dm-textcolor-link-main: #1677ff; // 正常超链接/字体按钮颜色
+@dm-textcolor-link-main-hover: #69b1ff; // 超链接接/字体按悬浮时的颜色
+@dm-textcolor-link-main-active: #1677ff; // 超链接接/字体按被点击时的颜色
+@dm-textcolor-link-sub: @dm-color-main; // 正常超链接/字体按钮颜色
+@dm-textcolor-link-sub-hover: @dm-color-main; // 超链接接/字体按悬浮时的颜色
+@dm-textcolor-link-sub-active: @dm-color-main; // 超链接接/字体按被点击时的颜色
+
+/* 
+ ** @name IconColor
+*/
+@dm-iconcolor-main: #787878; // 用于图标颜色
+@dm-iconcolor-main-active: @dm-color-main; // 用于图标颜色
+@dm-iconcolor-sub: #787878; // 用于图标颜色
+@dm-iconcolor-sub-active: @dm-color-sub; // 用于图标颜色
+
+/* 
+ ** @name OtherColor
+*/
+@dm-color-border: #c8c8c8; // 边框颜色
+@dm-color-divider: #dcdcdc; // 分割线颜色
+@dm-color-white: #ffffff; // 纯白
+@dm-color-black: #000000; // 纯黑
+
+/* 
+ ** @name Border
+*/
+@dm-border-color: @dm-color-border; // 边框颜色
+@dm-border-width: 1px; // 边框宽度
+@dm-border-type: solid; // 边框样式
+@dm-border: @dm-border-width @dm-border-type @dm-border-color; // 默认边框
+
+/* 
+ ** @name BorderRadius
+*/
+@dm-border-radius-lg: 21px;
+@dm-border-radius-md: 14px; // 最常用，由此往两边发散
+@dm-border-radius-sm: 7px;
+@dm-border-radius: @dm-border-radius-md; // 默认
+
+/* 
+ ** @name BoxShadow
+*/
+@dm-box-shadow-card: 0px 0px 8px 0px rgba(0, 0, 0, 0.15);
+@dm-box-shadow: @dm-box-shadow-card; // 默认
+
+/* 
+ ** @name LineHeight
+*/
+@dm-line-height-xxl: 2.4;
+@dm-line-height-xl: 2;
+@dm-line-height-lg: 1.8;
+@dm-line-height-md: 1.57; // 标准，由此往两边发散
+@dm-line-height-sm: 1.4;
+@dm-line-height-xs: 1.2;
+@dm-line-height-xxs: 1;
+@dm-line-height: @dm-line-height-md; // 默认
+
+/* 
+  ** @name 安全区域
+*/
+@dm-safe-area-inset-top: 0; // 顶部tabBar所占高度
+@dm-safe-area-inset-bottom: 0; // 底部tabBar所占高度

@@ -1,0 +1,343 @@
+/* 
+  * with 表示区别于默认情况，带有参数
+  * exclude 表示复合属性，抛去某个属性
+*/
+
+/* 
+ ** @name 默认全屏,需要根据实际情况额外配置padding值
+*/
+.full-page {
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 100vh;
+	background-color: @dm-bgcolor-main;
+}
+
+.box-shadow {
+	box-shadow: @dm-box-shadow;
+}
+
+/* 
+ ** @name Flex布局
+*/
+.flex-row-a-start {
+	display: flex;
+	align-items: flex-start;
+}
+
+.flex-row-a-center {
+	display: flex;
+	align-items: center;
+}
+
+.flex-row-a-end {
+	display: flex;
+	align-items: flex-end;
+}
+
+.flex-row-j-start {
+	display: flex;
+	justify-content: flex-start;
+}
+
+.flex-row-j-center {
+	display: flex;
+	justify-content: center;
+}
+
+.flex-row-j-end {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.flex-row-j-between {
+	display: flex;
+	justify-content: space-between;
+}
+
+.flex-row-j-around {
+	display: flex;
+	justify-content: space-around;
+}
+
+.flex-row-j-evenly {
+	display: flex;
+	justify-content: space-evenly;
+}
+
+.flex-col {
+	display: flex;
+	flex-direction: column;
+}
+
+.flex-col-a-start {
+	.flex-col;
+
+	align-items: flex-start;
+}
+
+.flex-col-a-center {
+	.flex-col;
+
+	align-items: center;
+}
+
+.flex-col-a-end {
+	.flex-col;
+
+	align-items: flex-end;
+}
+
+.flex-col-j-start {
+	.flex-col;
+
+	justify-content: flex-start;
+}
+
+.flex-col-j-center {
+	.flex-col;
+
+	justify-content: center;
+}
+
+.flex-col-j-end {
+	.flex-col;
+
+	justify-content: flex-end;
+}
+
+.flex-col-j-between {
+	.flex-col;
+
+	justify-content: space-between;
+}
+
+.flex-col-j-around {
+	.flex-col;
+
+	justify-content: space-around;
+}
+
+.flex-col-j-evenly {
+	.flex-col;
+
+	justify-content: space-evenly;
+}
+
+/* 
+ ** @name 预先定义好的Button样式
+*/
+
+/* 
+  ** @name 文本（正文/按钮/超链接） - 大小及颜色
+*/
+.text-main-20x {
+	font-size: @dm-font-size-20x; // 20 -40
+	color: @dm-textcolor-main;
+}
+
+.text-main-18x {
+	font-size: @dm-font-size-18x; // 16 - 32
+	color: @dm-textcolor-main;
+}
+
+.text-main-16x {
+	font-size: @dm-font-size-16x; // 16 - 32
+	color: @dm-textcolor-main;
+}
+
+.text-main-14x {
+	font-size: @dm-font-size-14x; // 14 - 28
+	color: @dm-textcolor-main;
+}
+
+.text-main-12x {
+	font-size: @dm-font-size-12x; // 12 -24
+	color: @dm-textcolor-main;
+}
+
+.text-main-10x {
+	font-size: @dm-font-size-10x; // 10 - 20
+	color: @dm-textcolor-main;
+}
+
+.text-sub-20x {
+	font-size: @dm-font-size-20x; // 20 -40
+	color: @dm-textcolor-sub;
+}
+
+.text-sub-18x {
+	font-size: @dm-font-size-18x; // 16 - 32
+	color: @dm-textcolor-sub;
+}
+
+.text-sub-16x {
+	font-size: @dm-font-size-16x; // 16 - 32
+	color: @dm-textcolor-sub;
+}
+
+.text-sub-14x {
+	font-size: @dm-font-size-14x; // 14 - 28
+	color: @dm-textcolor-sub;
+}
+
+.text-sub-12x {
+	font-size: @dm-font-size-12x; // 12 -24
+	color: @dm-textcolor-sub;
+}
+
+.text-sub-10x {
+	font-size: @dm-font-size-10x; // 10 - 20
+	color: @dm-textcolor-sub;
+}
+
+.text-other-20x {
+	font-size: @dm-font-size-20x; // 20 -40
+	color: @dm-textcolor-other;
+}
+
+.text-other-18x {
+	font-size: @dm-font-size-18x; // 16 - 32
+	color: @dm-textcolor-other;
+}
+
+.text-other-16x {
+	font-size: @dm-font-size-16x; // 16 - 32
+	color: @dm-textcolor-other;
+}
+
+.text-other-14x {
+	font-size: @dm-font-size-14x; // 14 - 28
+	color: @dm-textcolor-other;
+}
+
+.text-other-12x {
+	font-size: @dm-font-size-12x; // 12 -24
+	color: @dm-textcolor-other;
+}
+
+.text-other-10x {
+	font-size: @dm-font-size-10x; // 10 - 20
+	color: @dm-textcolor-other;
+}
+
+.text-link-main-20x {
+	font-size: @dm-font-size-20x; // 20 -40
+	color: @dm-textcolor-link-main;
+}
+
+.text-link-main-18x {
+	font-size: @dm-font-size-18x; // 16 - 32
+	color: @dm-textcolor-link-main;
+}
+
+.text-link-main-16x {
+	font-size: @dm-font-size-16x; // 16 - 32
+	color: @dm-textcolor-link-main;
+}
+
+.text-link-main-14x {
+	font-size: @dm-font-size-14x; // 14 - 28
+	color: @dm-textcolor-link-main;
+}
+
+.text-link-main-12x {
+	font-size: @dm-font-size-12x; // 12 -24
+	color: @dm-textcolor-link-main;
+}
+
+.text-link-main-10x {
+	font-size: @dm-font-size-10x; // 10 - 20
+	color: @dm-textcolor-link-main;
+}
+
+.text-link-sub-20x {
+	font-size: @dm-font-size-20x; // 20 -40
+	color: @dm-textcolor-link-sub;
+}
+
+.text-link-sub-18x {
+	font-size: @dm-font-size-18x; // 16 - 32
+	color: @dm-textcolor-link-sub;
+}
+
+.text-link-sub-16x {
+	font-size: @dm-font-size-16x; // 16 - 32
+	color: @dm-textcolor-link-sub;
+}
+
+.text-link-sub-14x {
+	font-size: @dm-font-size-14x; // 14 - 28
+	color: @dm-textcolor-link-sub;
+}
+
+.text-link-sub-12x {
+	font-size: @dm-font-size-12x; // 12 -24
+	color: @dm-textcolor-link-sub;
+}
+
+.text-link-sub-10x {
+	font-size: @dm-font-size-10x; // 10 - 20
+	color: @dm-textcolor-link-sub;
+}
+
+/* 
+ ** @name 文本省略号，必须配合width才可以生效
+*/
+.text-ellipsis-1 {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.text-ellipsis-2 {
+	display: -webkit-box;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+}
+
+.text-ellipsis-3 {
+	.text-ellipsis-2;
+
+	-webkit-line-clamp: 3;
+}
+
+.text-ellipsis-4 {
+	.text-ellipsis-2;
+
+	-webkit-line-clamp: 4;
+}
+
+.text-ellipsis-5 {
+	.text-ellipsis-2;
+
+	-webkit-line-clamp: 5;
+}
+
+/* 
+ ** 删除线
+*/
+.delete-line {
+	text-decoration: line-through;
+}
+.delete-line-with-color(@color) {
+	text-decoration: line-through @color;
+}
+
+/*
+ ** 背景
+*/
+.bg-image(@url) {
+	background-image: url(@url);
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	background-size: 100%; // 宽度100% 高度会随着宽度的变化而变化
+}
+
+.background-image-exclude-url {
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	background-size: 100%;
+}

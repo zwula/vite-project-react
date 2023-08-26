@@ -880,27 +880,26 @@ VITE_*XXXX_YYYY：只有以 VITE* 为前缀的变量才会暴露给经过 vite �
 
 但是在vite构建的项目中，业务代码是运行在浏览器环境中的，是不能识别`process.env`的，因此在业务代码中才需要通过使用`import.meta.env`获取当前环境的环境对象中的环境变量。而vite的配置文件(`vite.config.ts`)，则是运行在node环境中的，是可以识别 `process.env` 的，因此在`vite.config.ts`中，可以直接通过`process.env`获取当前环境的环境对象中的环境变量。
 
-#### 配置项目的全局样式文件 --- global.less
+#### 配置项目`less`样式的 全局变量 和 全局样式mixin
 
-在`src/assets`文件夹下，新建一个`global.less`文件，作为全局的less样式文件：
+在`src/assets`文件夹下，新建一个`global.less`文件，作为项目`less`样式文件的 全局变量 和 全局样式mixin 入口：
 
 该文件主要的作用是：
 
-1. 定义可以全局使用的less变量
-2. 定义可以全局使用的less混入
-3. 清除默认样式
+1. 定义可以全局使用的less变量variable
+2. 定义可以全局使用的less混入mixin
 
 为了更直观的组织代码，我们将global.less按照作用拆分为三个文件 `variable.less` 、`mixin.less` 、`reset.less`，并最终交由`global.less`文件统一管理
 
-新建`variable.less`文件 （代码篇幅较长，不在这里进行展示了）
-新建`mixin.less`文件 （代码篇幅较长，不在这里进行展示了）
+新建`variable.less`文件   全局的less变量文件
+新建`mixin.less`文件   全局的less样式mixin文件
 
 交由`global.less`统一管理
 
         /*
         ** 全局的样式文件
         ** 1、variable - 定义全局css 变量
-        ** 2、lib - 定义全局css mixin混入
+        ** 2、mixin - 定义全局css mixin混入
         */
     
         @import '@/assets/styles/variable.less';
