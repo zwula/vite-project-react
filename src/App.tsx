@@ -1,12 +1,25 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 // eslint-disable-next-line import/no-unresolved
 import viteLogo from '/vite.svg'
 import '@/App.less'
 import SvgIcon from './components/svg-icon'
+import axios from 'axios'
 
 function App() {
 	const [count, setCount] = useState(0)
+
+	useEffect(() => {
+		// 测试axios
+		axios
+			.post('/api/user/login', {
+				username: 'admin',
+				password: 'admin123',
+			})
+			.then((res) => {
+				console.log('🔥 >> file: App.tsx:14 >> axios.post >> res:', res)
+			})
+	}, [])
 
 	return (
 		<>

@@ -973,7 +973,7 @@ vite内置了5个环境变量，分别为：
 
 在需要展示SVG图标的组件中，使用之前创建的svg图标
 
-        <svg>
+        <svg style={{width:"24px",height:"24px"}}>
                 <use href="#icon-delete" fill="red"></use>
         </svg>
 
@@ -1268,7 +1268,7 @@ vite内置了5个环境变量，分别为：
                 },
         ] as MockMethod[]
 
-相当于我们定义了一个 `"/api/login"` 接口， 访问该接口会执行对应的逻辑函数，并返回其结果。
+相当于我们定义了一个 `"/api/user/login"` 接口， 访问该接口会执行对应的逻辑函数，并返回其结果。
 
 ##### 测试 `mockjs` 是否配置成功
 
@@ -1276,15 +1276,17 @@ vite内置了5个环境变量，分别为：
 
         pnpm install axios
 
-在 `App.tsx` 中增加以下代码，请求我们创建的 `"/api/login"` 业务接口，打印返回结果
+在 `App.tsx` 中增加以下代码，请求我们创建的 `"/api/user/login"` 业务接口，打印返回结果
+
+        import axios from "axios"
 
         useEffect(() => {
                 // 测试axios
                 axios
-                .post("/api/login", { username: "admin", password: "admin123" })
+                .post("/api/user/login", { username: "admin", password: "admin123" })
                 .then((res) => {
                         console.log("🔥 >> file: App.tsx:14 >> axios.post >> res:", res)
                 })
         }, [])
 
-可以发现 `mockjs` 已经配置成功，我们可以成功请求 `"/api/login"` 接口，并获取对应的结果。
+发现已经可以正常的请求模拟的接口并获取返回的数据，说明我们的 `mockjs` 已经配置成功。
