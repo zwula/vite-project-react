@@ -846,7 +846,7 @@
 
         envDir: 'env'， // env为目录名
 
-在项目根目录下，创建`env`文件夹，在该文件夹中组织不同环境下的环境变量文件 
+在项目根目录下，创建`env`文件夹，在该文件夹中组织不同环境下的环境变量文件
 
 ##### 配置不同环境下的环境变量文件
 
@@ -855,21 +855,22 @@
 npm run dev 会加载 .env 和 .env.development 内的配置
 npm run build 会加载 .env 和 .env.production 内的配置
 
-**在浏览器环境中**，加载的环境变量会通过 import.meta.env 以字符串形式暴露给客户端源码。为了防止意外地将一些环境变量泄漏到客户端，只有以 VITE\_ 为前缀的变量才会暴露给经过 vite 处理的代码。
+**在浏览器环境中**，加载的环境变量会通过 import.meta.env 以字符串形式暴露给客户端源码。为了防止意外地将一些环境变量泄漏到客户端，只有以 `"VITE_"` 为前缀的变量才会暴露给经过 vite 处理的代码。
 
-通过 import.meta.env 获取到的环境变量，主要包括以下两种类型：
+通过 `import.meta.env` 获取到的环境变量，主要包括以下两种类型：
 1、vite内置的环境变量
 
 vite内置了5个环境变量，分别为：
 
-BASE_URL --- 可以通过`vite.config.ts`文件中`base`配置项进行配置修改， **尽量不要去改这个值**
-DEV --- boolean，表示当前环境是否是DEV环境
-PROD --- boolean，表示当前环境是否是PROD环境
-SSR --- boolean，表示当前环境是否是SSR环境
-MODE --- string， 表示当前mode值
+        BASE_URL --- 通过`vite.config.ts`文件中`base`配置项进行配置修改， **不要修改**
+        DEV --- boolean，表示当前环境是否是DEV环境
+        PROD --- boolean，表示当前环境是否是PROD环境
+        SSR --- boolean，表示当前环境是否是SSR环境
+        MODE --- string， 表示当前mode值
 
 2、自定义的环境变量
-VITE_*XXXX_YYYY：只有以 VITE* 为前缀的变量才会暴露给经过 vite 处理的代码。
+
+        VITE_XXXX_YYYY：只有以 `"VITE_"` 为前缀的变量才会暴露给经过 vite 处理的代码。
 
 当我们运行 `pnpm run dev` 时，mode属于development，因此.env和 .env.development中以VITE\_ 为前缀的变量都会被识别。
 
@@ -891,8 +892,8 @@ VITE_*XXXX_YYYY：只有以 VITE* 为前缀的变量才会暴露给经过 vite �
 
 为了更直观的组织代码，我们将global.less按照作用拆分为三个文件 `variable.less` 、`mixin.less` 、`reset.less`，并最终交由`global.less`文件统一管理
 
-新建`variable.less`文件   全局的less变量文件
-新建`mixin.less`文件   全局的less样式mixin文件
+新建`variable.less`文件 全局的less变量文件
+新建`mixin.less`文件 全局的less样式mixin文件
 
 交由`global.less`统一管理
 
@@ -977,6 +978,8 @@ VITE_*XXXX_YYYY：只有以 VITE* 为前缀的变量才会暴露给经过 vite �
         </svg>
 
 我们发现这样使用起来及其不方便，我们可以将其封装为`SvgIcon`组件以方便在组件中进行使用。
+
+
 
 **封装组件前的准备**
 
