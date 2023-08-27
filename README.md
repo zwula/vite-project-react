@@ -1299,3 +1299,121 @@ vite内置了5个环境变量，分别为：
 2. 相应拦截器： 对响应的结果进行加工处理，并对请求过程中可能出现的错误进行统一的错误处理
 
 在 `src/utils` 中新建 `request.ts` 文件，我们在这个文件中对axios进行二次封装，以达到我们想要的期望:
+
+        import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
+
+        class Request {
+                baseRequest: AxiosInstance
+                defaultConfig: AxiosRequestConfig = {
+                        baseURL: import.meta.env.VITE_API_BASE_URL,
+                        timeout: 1000,
+                }
+
+                constructor(config: AxiosRequestConfig) {
+                        config = { ...this.defaultConfig, ...config }
+                        this.baseRequest = axios.create(config)
+
+                        // 请求拦截器
+                        this.baseRequest.interceptors.request.use((config) => {
+                                // 统一携带请求信息
+                                return config
+                        })
+
+                        // 响应拦截器
+                        this.baseRequest.interceptors.response.use(
+                                (rawResponse) => {
+                                        /*
+                                                当axios与服务器建立通信成功之后，会进入第一个响应拦截器onFullfilled中,但是这个数据仅仅表示和服务器成功通信，接收到了服务器返回的结果，并不一定是我们想要的业务逻辑数据，需要我们进行判断
+                                                1.如果接受到的数据，确实是我们需要的业务数据
+                                                        此时，我们进入正常的业务逻辑的书写，返回处理后的数据
+                                                        return processedResponse
+                                                2.如果接受到的数据，并不是我们需要的业务数据
+                                                        此时，我们需要进行错误处理，为了实现错误的统一处理，我们需要将其交给下一个响应拦截器，与网络层面的错误一并进行错误的统一处理。
+                                                        return Promise.reject(processedResponse)
+                                        */
+                                        return rawResponse
+                                },
+                                (rawError) => {
+                                        /*
+                                                当axios与服务器建立通信失败之后，会进入第一个响应拦截器onRejected中,error表示网络层面的错误，例如：
+                                                1. 超时
+                                                2. 请求的地址不存在，404 not found
+
+
+                                                对于这些网络层面的错误，我们不做任何处理，直接传递给下一个响应拦截器，和业务逻辑层面的错误一起进行处理。
+                                                注意： 如果想要传递给下一个拦截器的onRejectd中，就必须返回Promise.reject(error)
+                                        */
+                                        return Promise.reject(rawError)
+                                },
+                        )
+                        // 响应拦截器 - 统一的错误处理
+                        this.baseRequest.interceptors.response.use(
+                                (processedResponse) => {
+                                        /* 直接返回从第一个响应拦截器接受到的处理后的结果 response ，什么都不需要做 */
+                                        return processedResponse
+                                },
+                                (processedError) => {
+                                        console.log('interceptors2-rejected')
+                                        /*
+                                                第二个响应拦截器onRejected中,会接受到两种类型的错误：
+                                                1. 从第一个响应拦截器中onRejected中，传递过来的网络层面的错误
+                                                2. 从第一个响应拦截器中onFullfilled中，传递过来的业务逻辑层面的错误
+
+                                                我们将在这里对这些错误进行统一处理
+                                        */
+                                        return processedError
+                                },
+                        )
+                }
+
+                public get(url: string, config?: AxiosRequestConfig) {
+                        return this.baseRequest.get(url, config)
+                }
+                public post(url: string, data?: unknown, config?: AxiosRequestConfig) {
+                        return this.baseRequest.post(url, data, config)
+                }
+        }
+
+        // 默认导出Request的一个实例对象
+        export default new Request({})
+
+        以上，我们就完成了对axios的初步封装
+
+#### 配置`react-router-dom`
+
+安装依赖
+
+        pnpm install react-router-dom
+
+在入口文件`main.ts`中，增加如下的代码：
+
+        import React from 'react'
+        import ReactDOM from 'react-dom/client'
+        ++   import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+        // eslint-disable-next-line import/no-unresolved
+        import 'virtual:svg-icons-register'
+        --   import App from './App.tsx'
+        --   import './index.css'
+
+        ++   const router = createBrowserRouter([
+        ++           {
+        ++                   path: '/',
+        ++                   element: <div>Hello world!</div>,
+        ++           },
+        ++   ])
+
+        // eslint-disable-next-line import/no-named-as-default-member
+        ReactDOM.createRoot(document.getElementById('root')!).render(
+                <React.StrictMode>
+                --        <App />
+                ++        <RouterProvider router={router} />
+                </React.StrictMode>,
+        )
+
+完成如上配置后，当我们访问`http://localhost:5173/`的时候，就可以看到页面中显示的 `Hello world!` ，说明`react-router-dom`的初始化工作已经完成
+之后就可以删除初始化项目时生成的`App.tsx`,`App.less`和`index.css`这些没有用的文件。
+
+###### 配置`reset.less`， 重置所有浏览器样式
+
+在`src/assets/styles`新增`reset.less`文件。[具体样式参考这篇文章](https://blog.csdn.net/chaoPerson/article/details/130796513)
+在入口文件`main.ts`中，引入`reset.less`文件。
