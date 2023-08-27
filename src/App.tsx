@@ -4,20 +4,19 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import '@/App.less'
 import SvgIcon from './components/svg-icon'
-import axios from 'axios'
+import request from '@/utils/request'
 
 function App() {
 	const [count, setCount] = useState(0)
 
 	useEffect(() => {
-		// 测试axios
-		axios
-			.post('/api/user/login', {
+		request
+			.post('/user/login1', {
 				username: 'admin',
-				password: 'admin123',
+				password: 'admin1231',
 			})
 			.then((res) => {
-				console.log('🔥 >> file: App.tsx:14 >> axios.post >> res:', res)
+				console.log('🔥 >> file: App.tsx:17 >> useEffect >> res:', res)
 			})
 	}, [])
 
