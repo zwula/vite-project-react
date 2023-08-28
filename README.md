@@ -1416,4 +1416,264 @@ vite内置了5个环境变量，分别为：
 ###### 配置`reset.less`， 重置所有浏览器样式
 
 在`src/assets/styles`新增`reset.less`文件。[具体样式参考这篇文章](https://blog.csdn.net/chaoPerson/article/details/130796513)
-在入口文件`main.ts`中，引入`reset.less`文件。
+
+        html,
+        body {
+                height: 100%;
+
+                /* 文字风格 Sans-serif 各笔画粗细相同，Serif 笔画粗细不同，monospace 等宽体，cursive草书，fantasy梦幻 */
+                font-family: 'Microsoft YaHei', sans-serif, 'Helvetica Neue', Helvetica,
+                        Arial, '黑体', '宋体';
+                -webkit-tap-highlight-color: transparent;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+                font-size: 14px;
+                color: #333;
+        }
+
+        /* 重置各标签的默认样式 */
+        a,
+        body,
+        center,
+        cite,
+        code,
+        dd,
+        del,
+        div,
+        dl,
+        dt,
+        em,
+        fieldset,
+        figcaption,
+        figure,
+        footer,
+        form,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        header,
+        hr,
+        html,
+        img,
+        input,
+        label,
+        legend,
+        li,
+        mark,
+        ol,
+        p,
+        section,
+        span,
+        textarea,
+        time,
+        td,
+        th,
+        ul {
+                box-sizing: border-box;
+                padding: 0;
+                margin: 0;
+                font-style: normal;
+
+                /*  强制英文单词断行 */
+                word-break: break-all;
+
+                /*  自动换行 */
+                word-wrap: break-word;
+                border: 0;
+        }
+
+        /*  设置标签为块级分类 */
+        article,
+        aside,
+        details,
+        fieldset,
+        figcaption,
+        figure,
+        footer,
+        header,
+        main,
+        nav,
+        section {
+                display: block;
+        }
+
+        /* 去除input标签的默认样式 */
+        button,
+        input,
+        textarea {
+                padding: 0;
+                margin: 0;
+                font-family: 'Microsoft YaHei', sans-serif, 'Helvetica Neue', Helvetica,
+                        Arial, '黑体', '宋体';
+                font-size: 1em;
+                line-height: 1em;
+                -webkit-appearance: none;
+                background-color: transparent;
+                border: 0;
+                outline: none;
+        }
+
+        /*  禁止多文本框手动拖动大小 */
+        textarea {
+                -webkit-appearance: none;
+                resize: none;
+        }
+
+        /* 去掉按下的阴影盒子 */
+        input,
+        textarea,
+        a {
+                -webkit-tap-highlight-color: transparent;
+        }
+
+        /*  清除a标签下划线 */
+        a,
+        a:visited {
+                text-decoration: none;
+        }
+
+        a:focus,
+        a:active,
+        a:hover {
+                outline: none;
+        }
+
+        /*  清除列表前面的点 */
+        ol,
+        li,
+        ul {
+                list-style: none;
+        }
+
+        /*  清除IE下图片的边框 */
+        img {
+                font-size: 0;
+                border-style: none;
+        }
+
+        /*  解决chrome浏览器默认黄色背景问题 */
+        input:-webkit-autofill,
+        textarea:-webkit-autofill,
+        select:-webkit-autofill {
+                -webkit-box-shadow: 0 0 0 1000px #fff inset;
+        }
+
+        /*  设置默认滚动条样式 */
+        ::-webkit-input-placeholder {
+                color: #afbdcc;
+        }
+
+        :-moz-placeholder {
+                color: #afbdcc;
+        }
+
+        ::-moz-placeholder {
+                color: #afbdcc;
+        }
+
+        :-ms-input-placeholder {
+                color: #afbdcc;
+        }
+
+        ::-webkit-scrollbar {
+                width: 6px;
+                height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+                background-color: #f5f5f5;
+        }
+
+        ::-webkit-scrollbar-track-piece {
+                background-color: #f5f5f5;
+                border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+                background-color: #ccc;
+                border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-corner {
+                background-color: #f5f5f5;
+        }
+
+        ::-webkit-resizer {
+                background-repeat: no-repeat;
+                background-position: bottom right;
+        }
+
+在入口文件`main.ts`中，引入`reset.less`文件
+
+        import '@/assets/styles/reset.less'
+
+##### 配置一级路由
+
+为了方便路由的管理，我们通常会将业务需求中的路由抽离出来，进行统一的管理
+
+新建`"src/router"`文件夹，并在该文件夹中新建`index.ts`和`routes.tsx`两个文件
+
+`index.ts`文件： 创建router并注册routes
+
+        # src/router/index.ts
+
+        import { createBrowserRouter } from 'react-router-dom'
+        import routes from './routes'
+
+        const router = createBrowserRouter(routes)
+
+        export default router
+
+`routes.ts`文件：routes的统一管理文件
+
+        # src/router/routes.tsx
+
+        import type { RouteObject } from 'react-router-dom'
+        import Home from '@/views/home'
+        import Login from '@/views/login'
+        import NotFound from '@/views/not-found'
+
+        const routes = [
+                {
+                        path: '/',
+                        element: <Home />,
+                },
+                {
+                        path: '/login',
+                        element: <Login />,
+                },
+                {
+                        path: '/*',
+                        element: <NotFound />,
+                },
+        ] as RouteObject[]
+
+        export default routes
+
+此处，新增并配置了三个一级路由，分别是登录Login、首页Home、404NotFound
+
+调整`main.ts`中的代码
+
+        import React from 'react'
+        import ReactDOM from 'react-dom/client'
+
+        // eslint-disable-next-line import/no-unresolved
+        import 'virtual:svg-icons-register'
+
+        import { RouterProvider } from 'react-router-dom'
+        import router from './router'
+
+        import '@/assets/styles/reset.less'
+
+        // eslint-disable-next-line import/no-named-as-default-member
+        ReactDOM.createRoot(document.getElementById('root')!).render(
+                <React.StrictMode>
+                        <RouterProvider router={router} />
+                </React.StrictMode>,
+        )
