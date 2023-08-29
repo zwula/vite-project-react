@@ -1379,6 +1379,8 @@ vite内置了5个环境变量，分别为：
 
         以上，我们就完成了对axios的初步封装
 
+---
+
 #### 配置`react-router-dom`
 
 安装依赖
@@ -1413,7 +1415,7 @@ vite内置了5个环境变量，分别为：
 完成如上配置后，当我们访问`http://localhost:5173/`的时候，就可以看到页面中显示的 `Hello world!` ，说明`react-router-dom`的初始化工作已经完成
 之后就可以删除初始化项目时生成的`App.tsx`,`App.less`和`index.css`这些没有用的文件。
 
-###### 配置`reset.less`， 重置所有浏览器样式
+##### 配置`reset.less`， 重置所有浏览器样式
 
 在`src/assets/styles`新增`reset.less`文件。[具体样式参考这篇文章](https://blog.csdn.net/chaoPerson/article/details/130796513)
 
@@ -1633,8 +1635,9 @@ vite内置了5个环境变量，分别为：
 `routes.ts`文件：routes的统一管理文件
 
         # src/router/routes.tsx
-
+        <!-- ts类型 -->
         import type { RouteObject } from 'react-router-dom'
+        <!-- 路由视图组件 -->
         import Home from '@/views/home'
         import Login from '@/views/login'
         import NotFound from '@/views/not-found'
@@ -1677,3 +1680,164 @@ vite内置了5个环境变量，分别为：
                         <RouterProvider router={router} />
                 </React.StrictMode>,
         )
+
+---
+
+#### 配置全局状态管理库 - @redux/toolkit [官网](https://redux-toolkit.js.org/tutorials/quick-start)
+
+下载并安装依赖 `react-redux` 和 `@reduxjs/toolkit`
+
+        pnpm install react-redux @reduxjs/toolkit
+
+创建`src/redux`文件夹,
+
+1 . 在该文件夹下创建`store.ts`文件
+
+        import { configureStore } from '@reduxjs/toolkit'
+
+        const store = configureStore({
+                reducer: {},
+        })
+
+        export default store
+
+        /*
+        ** 导出相关类型
+                RootState： 包含store中所有被注册的State
+                AppGetState： getState方法的类型
+                AppDispatch:  dispatch方法的类型
+        */
+        export type RootState = ReturnType<typeof store.getState>
+        export type AppGetState = typeof store.getState
+        export type AppDispatch = typeof store.dispatch
+
+2 . 在`main.ts`文件中，加入与redux-tookit相关的内容：
+
+        import React from 'react'
+        import ReactDOM from 'react-dom/client'·
+
+        // eslint-disable-next-line import/no-unresolved
+        import 'virtual:svg-icons-register'
+
+        import { RouterProvider } from 'react-router-dom'
+        import router from './router'
+
+        ++   /*
+        ++    ** redux-tookit
+        ++    */
+        ++   import { Provider } from 'react-redux'
+        ++   import store from './redux/store'
+
+        import '@/assets/styles/reset.less'
+
+        // eslint-disable-next-line import/no-named-as-default-member
+        ReactDOM.createRoot(document.getElementById('root')!).render(
+                ++   <Provider store={store}>
+                        <React.StrictMode>
+                                <RouterProvider router={router} />
+                        </React.StrictMode>
+                ++   </Provider>,
+        )
+
+这样，我们就完成了redux-toolkit的初始化工作，为React项目提供 ReduxStore 的特性。
+
+3 . 根据业务需求，定义所需要的ReduxStore模块
+
+在`src/redux`文件夹下创建`reducers`文件夹
+
+3.1 创建index.ts文件，统一管理所有的 `xxx-slice.ts` ReduxStore模块
+
+        export { default as user } from './user-slice.ts'
+
+3.2 创建`user-slice.ts`, 项目中和用户相关的数据状态，都存储在该文件中
+
+        import { createSlice } from '@reduxjs/toolkit'
+        import type { PayloadAction } from '@reduxjs/toolkit'
+
+        export interface UserState {
+                value: number
+        }
+
+        const initialState: UserState = {
+                value: 0,
+        }
+
+        export const userSlice = createSlice({
+                name: 'global',
+                initialState,
+                /*
+                 ** 同步修改状态的方法
+                 */
+                reducers: {
+                        increment: (state) => {
+                                state.value += 1
+                        },
+                        decrement: (state) => {
+                                state.value -= 1
+                        },
+                        incrementByAmount: (state, action: PayloadAction<number>) => {
+                                state.value += action.payload
+                        },
+                },
+        })
+
+        // 导出reducer给store进行注册
+        export default userSlice.reducer
+        // 导出改变状态的同步方法
+        export const { increment, decrement, incrementByAmount } = userSlice.actions
+
+在 `Login` 组件中测试使用并修改 `userSlice` 中存储的值
+
+        import { increment } from '@/redux/reducers/user-slice'
+        import { useDispatch, useSelector } from 'react-redux'
+
+        const Login = () => {
+                <!-- 痛点：  报错提示：state的类型未知，对于state没有ts代码提示，非常的不友好-->
+                const user = useSelector((state) => state.user)
+                const dispatch = useDispatch()
+                const handleClick = () => {
+                        dispatch(increment())
+                }
+                return <div onClick={handleClick}>Login --- {user.value}</div>
+        }
+
+        export default Login
+
+至此，我们已经完成了对`redux-toolkit`的配置工作，但是针对上述使用过程中产生的痛点，我们还需要进行以下调整封装
+
+##### 封装`useDispatch` 和 `useSelector`
+
+为了更方便的在项目中使用`ReduxStore`,具备更好的代码提示等功能, 我们将对`useDispatch` 和 `useSelector`进行进一步的封装
+
+在`src/redux`文件夹下创建`hooks`文件，增加以下代码内容
+
+        import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
+        import type { AppDispatch, RootState } from './store'
+
+        /*
+         ** @see 在整个应用程序中使用 `useAppDispatch` 和 `useAppSelector` 代替 `useDispatch` 和 `useSelector`
+         */
+        export const useAppDispatch: () => AppDispatch = useDispatch
+        export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+
+我们在组件中整体使用`useAppDispatch` 和 `useAppSelector` 代替 `useDispatch` 和 `useSelector`
+
+调整之后，在Login组件中测试封装后的Hooks是否可以正常使用
+
+        import { useAppSelector, useAppDispatch } from '@/redux/hooks'
+        import { increment, userSelector } from '@/redux/reducers/user-slice'
+
+        const Login = () => {
+                const user = useAppSelector(userSelector)
+                const dispatch = useAppDispatch()
+                const handleClick = () => {
+                        dispatch(increment())
+                }
+                return <div onClick={handleClick}>Login --- {user.value}</div>
+        }
+
+        export default Login
+
+此时，针对state的类型和代码提示就会出现。
+
+---
