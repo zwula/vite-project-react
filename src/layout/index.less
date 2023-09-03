@@ -1,0 +1,45 @@
+@class-prefix: ~'app-layout';
+
+.@{class-prefix} {
+	width: 100%;
+	height: 100vh;
+
+	&-sider {
+		flex: 0 0 @dm-layout-sider-width !important;
+		width: @dm-layout-sider-width !important;
+		min-width: @dm-layout-sider-minwidth !important;
+		max-width: @dm-layout-sider-maxwidth !important;
+		height: 100vh !important;
+		overflow-y: auto;
+		color: @dm-layout-sider-color !important;
+		background-color: @dm-layout-sider-bgcolor !important;
+
+		::-webkit-scrollbar {
+			display: none;
+		}
+	}
+
+	&-header {
+		width: 100% !important;
+		height: @dm-layout-header-height !important;
+		padding: 0 !important;
+		line-height: @dm-layout-header-height !important;
+		color: @dm-layout-header-color !important;
+		background-color: @dm-layout-header-bgcolor !important;
+	}
+
+	&-content {
+		box-sizing: border-box !important;
+		padding: @dm-padding-20x !important;
+		overflow-y: auto;
+	}
+
+	&-footer {
+		width: 100% !important;
+		height: @dm-layout-footer-height !important;
+		padding: 0 !important;
+		line-height: @dm-layout-footer-height !important;
+		color: @dm-layout-footer-color !important;
+		background-color: @dm-layout-footer-bgcolor !important;
+	}
+}
