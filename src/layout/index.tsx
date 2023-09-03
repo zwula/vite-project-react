@@ -4,6 +4,8 @@
 
 import { Layout } from 'antd'
 import { Outlet } from 'react-router-dom'
+import Logo from './logo'
+
 import './index.less'
 
 const { Header, Footer, Sider, Content } = Layout
@@ -13,7 +15,9 @@ const AppLayout = () => {
 	return (
 		<div>
 			<Layout className={classPrefix}>
-				<Sider className={`${classPrefix}-sider`}>Sider</Sider>
+				<Sider className={`${classPrefix}-sider`}>
+					<Logo />
+				</Sider>
 				<Layout>
 					<Header className={`${classPrefix}-header`}>Header</Header>
 					<Content className={`${classPrefix}-content`}>

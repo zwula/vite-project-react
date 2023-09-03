@@ -1,0 +1,21 @@
+@class-prefix: ~'logo';
+
+.@{class-prefix} {
+	width: 100%;
+	height: @dm-layout-sider-logo-height;
+	padding: 0 @dm-padding-20x;
+	line-height: @dm-layout-sider-logo-height;
+	background-color: @dm-layout-sider-logo-bgcolor;
+	.flex-row-a-center;
+
+	&-img {
+		width: @dm-layout-sider-logo-image-width;
+		height: @dm-layout-sider-logo-image-height;
+	}
+
+	&-title {
+		margin-left: @dm-margin-12x;
+		font-size: @dm-layout-sider-logo-fontsize;
+		color: @dm-layout-sider-logo-color;
+	}
+}
