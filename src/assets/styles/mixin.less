@@ -4,20 +4,6 @@
 */
 
 /* 
- ** @name 默认全屏,需要根据实际情况额外配置padding值
-*/
-.full-page {
-	box-sizing: border-box;
-	width: 100%;
-	min-height: 100vh;
-	background-color: @dm-bgcolor-main;
-}
-
-.box-shadow {
-	box-shadow: @dm-box-shadow;
-}
-
-/* 
  ** @name Flex布局
 */
 .flex-row-a-start {
@@ -123,10 +109,6 @@
 
 	justify-content: space-evenly;
 }
-
-/* 
- ** @name 预先定义好的Button样式
-*/
 
 /* 
   ** @name 文本（正文/按钮/超链接） - 大小及颜色
@@ -317,27 +299,53 @@
 }
 
 /* 
- ** 删除线
+	** @name 滚动条样式
 */
-.delete-line {
-	text-decoration: line-through;
-}
-.delete-line-with-color(@color) {
-	text-decoration: line-through @color;
+::-webkit-scrollbar {
+	/* 滚动条不显示 */
+	display: none;
+
+	/* 对应纵向滚动条的宽度 */
+	width: 5px;
+
+	/* 对应横向滚动条的宽度 */
+	height: 5px;
 }
 
-/*
- ** 背景
-*/
-.bg-image(@url) {
-	background-image: url(@url);
-	background-repeat: no-repeat;
-	background-position: 0 0;
-	background-size: 100%; // 宽度100% 高度会随着宽度的变化而变化
+/* 滚动条上的滚动滑块 */
+::-webkit-scrollbar-thumb {
+	background-color: #49b1f5 !important;
+	border-radius: 32px;
 }
 
-.background-image-exclude-url {
-	background-repeat: no-repeat;
-	background-position: 0 0;
-	background-size: 100%;
+/* 滚动条上的滚动轨道 */
+::-webkit-scrollbar-track {
+	background-color: #dbeffd !important;
+	border-radius: 32px;
+}
+
+/* antd全局样式修改 */
+
+/* 
+ ** 被选中样式
+*/
+.ant-menu-item-selected {
+	color: #fff !important;
+	background-color: #1677ff !important;
+}
+
+/* 
+ ** hover样式
+*/
+.ant-menu-item-active {
+	color: #fff !important;
+}
+
+/* 
+ ** 子路由被选中时，父路由的颜色
+*/
+.ant-menu-submenu-selected {
+	.ant-menu-submenu-title {
+		color: #fff !important;
+	}
 }

@@ -5,6 +5,7 @@
 import { Layout } from 'antd'
 import { Outlet } from 'react-router-dom'
 import Logo from './logo'
+import MenuNav from './menu-nav'
 
 import './index.less'
 
@@ -17,6 +18,7 @@ const AppLayout = () => {
 			<Layout className={classPrefix}>
 				<Sider className={`${classPrefix}-sider`}>
 					<Logo />
+					<MenuNav />
 				</Sider>
 				<Layout>
 					<Header className={`${classPrefix}-header`}>Header</Header>
