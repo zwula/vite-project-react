@@ -7,6 +7,13 @@ import routes, { enhancedRouteObject } from '@/router/routes'
 import './index.less'
 
 type MenuItem = Required<MenuProps>['items'][number]
+interface MenuInfo {
+	key: string
+	keyPath: string[]
+	/** @deprecated This will not support in future. You should avoid to use this */
+	item: React.ReactInstance
+	domEvent: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>
+}
 
 const classPrefix = 'menu-nav'
 
@@ -97,7 +104,11 @@ const MenuNav = () => {
 		getMenuItmesRecursively(routes, items)
 	}, [])
 
-	const handleMenuItemClick = ({ keyPath }) => {
+	/* 
+		!todo MenuInfo如何引入
+	*/
+	const handleMenuItemClick = (info: MenuInfo) => {
+		const { keyPath } = info
 		const path = getPath(keyPath)
 		navigate(path)
 	}
