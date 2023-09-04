@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Menu } from 'antd'
 import type { MenuProps } from 'antd'
+import { useNavigate } from 'react-router-dom'
 import routes, { enhancedRouteObject } from '@/router/routes'
 
 import './index.less'
@@ -9,7 +10,23 @@ type MenuItem = Required<MenuProps>['items'][number]
 
 const classPrefix = 'menu-nav'
 
+const getPath = (pathArray: string[]) => {
+	let path = ''
+	const newPathArray = pathArray.reverse()
+	newPathArray.forEach((pathItem) => {
+		if (pathItem) {
+			if (pathItem.startsWith('/')) {
+				path += pathItem
+			} else {
+				path += '/' + pathItem
+			}
+		}
+	})
+	return path
+}
+
 const MenuNav = () => {
+	const navigate = useNavigate()
 	const [menuItems, setMenuItems] = useState<MenuItem[]>()
 	/* 获取一个menuItem数据 */
 	const getMenuItem = (
@@ -80,7 +97,19 @@ const MenuNav = () => {
 		getMenuItmesRecursively(routes, items)
 	}, [])
 
-	return <Menu className={classPrefix} mode="inline" items={menuItems} />
+	const handleMenuItemClick = ({ keyPath }) => {
+		const path = getPath(keyPath)
+		navigate(path)
+	}
+
+	return (
+		<Menu
+			className={classPrefix}
+			mode="inline"
+			items={menuItems}
+			onClick={handleMenuItemClick}
+		/>
+	)
 }
 
 export default MenuNav
