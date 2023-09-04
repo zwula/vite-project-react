@@ -1,6 +1,7 @@
 import SvgIcon from '@/components/svg-icon'
-import { lazy } from 'react'
+import { Suspense, lazy } from 'react'
 import type { RouteObject } from 'react-router-dom'
+import Loading from '@/components/loading'
 
 // 路由懒加载方案
 const Login = lazy(() => import('@/views/login'))
@@ -30,7 +31,11 @@ const routes = [
 	// 一级路由
 	{
 		path: '/login',
-		element: <Login />,
+		element: (
+			<Suspense fallback={<Loading />}>
+				<Login />
+			</Suspense>
+		),
 		id: 'Login',
 		meta: {
 			show: false,
@@ -38,7 +43,11 @@ const routes = [
 	},
 	{
 		path: '/',
-		element: <AppLayout />,
+		element: (
+			<Suspense fallback={<Loading />}>
+				<AppLayout />
+			</Suspense>
+		),
 		id: 'Index',
 		meta: {
 			show: true,
@@ -46,7 +55,11 @@ const routes = [
 		children: [
 			{
 				index: true,
-				element: <Home />,
+				element: (
+					<Suspense fallback={<Loading />}>
+						<Home />
+					</Suspense>
+				),
 				id: 'Home',
 				meta: {
 					show: true,
@@ -59,7 +72,11 @@ const routes = [
 	},
 	{
 		path: '/screen',
-		element: <Screen />,
+		element: (
+			<Suspense fallback={<Loading />}>
+				<Screen />
+			</Suspense>
+		),
 		id: 'Screen',
 		meta: {
 			show: true,
@@ -70,7 +87,11 @@ const routes = [
 	},
 	{
 		path: '/acl',
-		element: <AppLayout />,
+		element: (
+			<Suspense fallback={<Loading />}>
+				<AppLayout />
+			</Suspense>
+		),
 		id: 'Acl',
 		meta: {
 			show: true,
@@ -81,18 +102,26 @@ const routes = [
 		children: [
 			{
 				index: true,
-				element: <User />,
+				element: (
+					<Suspense fallback={<Loading />}>
+						<User />
+					</Suspense>
+				),
 				id: 'User',
 				meta: {
 					show: true,
-					key: 'user',
+					key: '',
 					name: '用户管理',
 					icon: <SvgIcon icon="user" />,
 				},
 			},
 			{
 				path: 'role',
-				element: <Role />,
+				element: (
+					<Suspense fallback={<Loading />}>
+						<Role />
+					</Suspense>
+				),
 				id: 'Role',
 				meta: {
 					show: true,
@@ -103,7 +132,11 @@ const routes = [
 			},
 			{
 				path: 'permission',
-				element: <Permission />,
+				element: (
+					<Suspense fallback={<Loading />}>
+						<Permission />
+					</Suspense>
+				),
 				id: 'Permission',
 				meta: {
 					show: true,
