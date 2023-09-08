@@ -30,7 +30,7 @@ const SvgIcon: React.FC<SvgIconProps> = (comProps: SvgIconProps) => {
 
 	return withNativeProps(
 		ret,
-		<div className={classPrefix}>
+		<div className={classPrefix} style={{ lineHeight: 1 }}>
 			<svg style={{ width: props.width, height: props.height }}>
 				<use
 					href={props.iconPrefix + props.icon}
