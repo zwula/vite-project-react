@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Menu } from 'antd'
 import type { MenuProps } from 'antd'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import routes, { enhancedRouteObject } from '@/router/routes'
 
 import './index.less'
@@ -32,8 +32,26 @@ const getPath = (pathArray: string[]) => {
 	return path
 }
 
+const getDefaultSelectedKey = (pathname: string): string => {
+	const stringArr = pathname.split('/')
+	return stringArr[stringArr.length - 1]
+}
+
+const getDefaultOpenKey = (pathname: string): string => {
+	const stringArr = pathname.split('/')
+	let defaultOpenKey = '/'
+	for (let index = 0; index < stringArr.length - 1; index++) {
+		const element = stringArr[index]
+		if (element) {
+			defaultOpenKey += element
+		}
+	}
+	return defaultOpenKey
+}
+
 const MenuNav = () => {
 	const navigate = useNavigate()
+	const { pathname } = useLocation()
 	const [menuItems, setMenuItems] = useState<MenuItem[]>()
 	/* 获取一个menuItem数据 */
 	const getMenuItem = (
@@ -121,8 +139,6 @@ const MenuNav = () => {
 		const items: MenuItem[] = []
 		getMenuItmesRecursively(routes, items)
 		setMenuItems(items)
-		// 将路由导航至根目录
-		navigate('/')
 	}, [])
 
 	/* 
@@ -144,7 +160,8 @@ const MenuNav = () => {
 
 	return (
 		<Menu
-			defaultSelectedKeys={['home']} // 刷新默认显示首页
+			defaultOpenKeys={[getDefaultOpenKey(pathname)]}
+			defaultSelectedKeys={[getDefaultSelectedKey(pathname)]} // 刷新默认显示首页
 			className={classPrefix}
 			mode="inline"
 			items={menuItems}
