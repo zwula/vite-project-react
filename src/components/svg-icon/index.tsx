@@ -13,7 +13,7 @@ export type SvgIconProps = {
 } & NativeProps
 
 const defaultProps = {
-	color: 'rgba(255,255,255,0.65)',
+	color: '#ccc',
 	iconPrefix: '#icon-',
 	icon: '',
 	width: '16px',
