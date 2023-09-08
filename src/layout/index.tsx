@@ -3,29 +3,24 @@
  */
 
 import { Layout } from 'antd'
-import { Outlet } from 'react-router-dom'
-import Logo from './logo'
-import MenuNav from './menu-nav'
+
+import Sider from './sider'
+import Header from './header'
+import Main from './main'
+import Footer from './footer'
 
 import './index.less'
-
-const { Header, Footer, Sider, Content } = Layout
 
 const classPrefix = 'app-layout'
 const AppLayout = () => {
 	return (
 		<div>
 			<Layout className={classPrefix}>
-				<Sider className={`${classPrefix}-sider`}>
-					<Logo />
-					<MenuNav />
-				</Sider>
+				<Sider></Sider>
 				<Layout>
-					<Header className={`${classPrefix}-header`}>Header</Header>
-					<Content className={`${classPrefix}-content`}>
-						<Outlet />
-					</Content>
-					<Footer className={`${classPrefix}-footer`}>Footer</Footer>
+					<Header></Header>
+					<Main></Main>
+					<Footer></Footer>
 				</Layout>
 			</Layout>
 		</div>

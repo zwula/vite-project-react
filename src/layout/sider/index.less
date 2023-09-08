@@ -1,0 +1,16 @@
+@class-prefix: ~'sider';
+
+.@{class-prefix} {
+	flex: 0 0 @dm-layout-sider-width !important;
+	width: @dm-layout-sider-width !important;
+	min-width: @dm-layout-sider-minwidth !important;
+	max-width: @dm-layout-sider-maxwidth !important;
+	height: 100vh !important;
+	overflow-y: auto;
+	color: @dm-layout-sider-color !important;
+	background-color: @dm-layout-sider-bgcolor !important;
+
+	::-webkit-scrollbar {
+		display: none;
+	}
+}
