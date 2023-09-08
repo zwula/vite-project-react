@@ -16,6 +16,10 @@ const Screen = lazy(() => import('@/views/screen'))
 const User = lazy(() => import('@/views/acl/user'))
 const Role = lazy(() => import('@/views/acl/role'))
 const Permission = lazy(() => import('@/views/acl/permission'))
+const Trademark = lazy(() => import('@/views/product/trademark'))
+const Attr = lazy(() => import('@/views/product/attr'))
+const Sku = lazy(() => import('@/views/product/sku'))
+const Spu = lazy(() => import('@/views/product/spu'))
 
 type metaObject = {
 	show: boolean // 当前路由是否需要显示在menu中, 如果需要子路由显示，则父路由必须显示
@@ -52,12 +56,12 @@ const routes = [
 				<AppLayout />
 			</Suspense>
 		),
-		id: 'App',
+		id: 'HomeLayout',
 		meta: {
 			show: true,
 		},
 		children: [
-			// 该子路由存在的意义是为了实现路由重定向
+			// "Index路由" --> 该子路由存在的意义是为了实现路由重定向,整体相当于之前的redirect:"/home"
 			{
 				index: true,
 				element: <Navigate to={'home'} />,
@@ -105,7 +109,7 @@ const routes = [
 				<AppLayout />
 			</Suspense>
 		),
-		id: 'Acl',
+		id: 'AclLayout',
 		meta: {
 			show: true,
 			key: '/acl',
@@ -165,6 +169,92 @@ const routes = [
 					key: 'permission',
 					name: '菜单管理',
 					icon: <SvgIcon icon="permission" />,
+				},
+			},
+		],
+	},
+	{
+		path: '/product',
+		element: (
+			<Suspense fallback={<Loading />}>
+				<AppLayout />
+			</Suspense>
+		),
+		id: 'ProductLayout',
+		meta: {
+			show: true,
+			key: '/product',
+			name: '商品管理',
+			icon: <SvgIcon icon="product" />,
+		},
+		children: [
+			// 该子路由存在的意义是为了实现路由重定向
+			{
+				index: true,
+				element: <Navigate to="trademark" />,
+				id: 'ProductIndex',
+				meta: {
+					show: false,
+				},
+			},
+			{
+				path: 'trademark',
+				element: (
+					<Suspense fallback={<Loading />}>
+						<Trademark />
+					</Suspense>
+				),
+				id: 'Trademark',
+				meta: {
+					show: true,
+					key: 'trademark',
+					name: '品牌管理',
+					icon: <SvgIcon icon="trademark" />,
+				},
+			},
+			{
+				path: 'attr',
+				element: (
+					<Suspense fallback={<Loading />}>
+						<Attr />
+					</Suspense>
+				),
+				id: 'Attr',
+				meta: {
+					show: true,
+					key: 'attr',
+					name: '属性管理',
+					icon: <SvgIcon icon="attr" />,
+				},
+			},
+			{
+				path: 'sku',
+				element: (
+					<Suspense fallback={<Loading />}>
+						<Sku />
+					</Suspense>
+				),
+				id: 'Sku',
+				meta: {
+					show: true,
+					key: 'sku',
+					name: 'sku管理',
+					icon: <SvgIcon icon="sku" />,
+				},
+			},
+			{
+				path: 'spu',
+				element: (
+					<Suspense fallback={<Loading />}>
+						<Spu />
+					</Suspense>
+				),
+				id: 'Spu',
+				meta: {
+					show: true,
+					key: 'spu',
+					name: 'spu管理',
+					icon: <SvgIcon icon="spu" />,
 				},
 			},
 		],
