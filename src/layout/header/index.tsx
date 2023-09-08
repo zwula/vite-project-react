@@ -1,12 +1,14 @@
 import { Layout } from 'antd'
+import Left from './Left'
+import Right from './Right'
 import './index.less'
 
 const classPrefix = 'header'
 const Header = () => {
 	return (
 		<Layout.Header className={classPrefix}>
-			<div className={`${classPrefix}-left`}>123</div>
-			<div className={`${classPrefix}-right`}>456</div>
+			<Left />
+			<Right />
 		</Layout.Header>
 	)
 }
