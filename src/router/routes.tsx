@@ -1,11 +1,15 @@
 import SvgIcon from '@/components/svg-icon'
 import { Suspense, lazy } from 'react'
-import type { RouteObject } from 'react-router-dom'
+import { Navigate, type RouteObject } from 'react-router-dom'
 import Loading from '@/components/loading'
 
 // 路由懒加载方案
-const Login = lazy(() => import('@/views/login'))
+/*
+ ** AppLayout仅为视图布局容器，和路由的组织毫无关系，完全可以根据路由需求灵活的使用AppLayout视图布局容器
+ */
 const AppLayout = lazy(() => import('@/layout/index'))
+
+const Login = lazy(() => import('@/views/login'))
 const NotFound = lazy(() => import('@/views/not-found'))
 const Home = lazy(() => import('@/views/home'))
 const Screen = lazy(() => import('@/views/screen'))
@@ -48,13 +52,22 @@ const routes = [
 				<AppLayout />
 			</Suspense>
 		),
-		id: 'Index',
+		id: 'App',
 		meta: {
 			show: true,
 		},
 		children: [
+			// 该子路由存在的意义是为了实现路由重定向
 			{
 				index: true,
+				element: <Navigate to={'home'} />,
+				id: 'HomeIndex',
+				meta: {
+					show: false,
+				},
+			},
+			{
+				path: 'home',
 				element: (
 					<Suspense fallback={<Loading />}>
 						<Home />
@@ -63,7 +76,7 @@ const routes = [
 				id: 'Home',
 				meta: {
 					show: true,
-					key: '/',
+					key: 'home',
 					name: '首页',
 					icon: <SvgIcon icon="home" />,
 				},
@@ -100,8 +113,17 @@ const routes = [
 			icon: <SvgIcon icon="lock" />,
 		},
 		children: [
+			// 该子路由存在的意义是为了实现路由重定向
 			{
 				index: true,
+				element: <Navigate to="user" />,
+				id: 'AclIndex',
+				meta: {
+					show: false,
+				},
+			},
+			{
+				path: 'user',
 				element: (
 					<Suspense fallback={<Loading />}>
 						<User />
@@ -110,7 +132,7 @@ const routes = [
 				id: 'User',
 				meta: {
 					show: true,
-					key: '',
+					key: 'user',
 					name: '用户管理',
 					icon: <SvgIcon icon="user" />,
 				},

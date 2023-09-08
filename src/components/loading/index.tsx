@@ -6,11 +6,7 @@ const classPrefix = `loading`
 const Loading = () => {
 	return (
 		<div className={classPrefix}>
-			<Spin
-				className={`${classPrefix}-spin`}
-				size="large"
-				tip="Loading"
-			/>
+			<Spin className={`${classPrefix}-spin`} size="large" />
 		</div>
 	)
 }

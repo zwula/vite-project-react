@@ -61,12 +61,22 @@ const MenuNav = () => {
 			if (route.meta.show) {
 				let menuItem
 				// 如果当前路由存在子路由
-				if (route.children && route.children.length === 1) {
-					// 有且只有一个子路由，则不显示父路由，只显示仅有的子路由
+				// 有且只有一个子路由，则不显示父路由，只显示仅有的子路由
+				/*
+				 ** 1. 有且只有一个子路由，则不显示父路由，只显示仅有的子路由
+				 ** 2. 有二个子路由，且第一个子路由是Index路由，用来做路由重定向的"假路由"，则不显示父路由，只显示仅有的子路由
+				 */
+				if (
+					(route.children && route.children.length === 1) ||
+					(route.children &&
+						route.children.length === 2 &&
+						route.children[0].meta.show === false)
+				) {
 					menuItem = getMenuItem(
-						route.children[0].meta.name,
-						route.children[0].meta.key as string,
-						route.children[0].meta.icon,
+						route.children[route.children.length - 1].meta.name,
+						route.children[route.children.length - 1].meta
+							.key as string,
+						route.children[route.children.length - 1].meta.icon,
 					)
 					items.push(menuItem)
 					return
