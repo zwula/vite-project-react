@@ -170,6 +170,48 @@ const routes = [
 					name: '菜单管理',
 					icon: <SvgIcon icon="permission" />,
 				},
+				// 测试多级路由表现情况
+				children: [
+					// 该子路由存在的意义是为了实现路由重定向
+					{
+						index: true,
+						element: <Navigate to="user1" />,
+						id: 'AclIndex1',
+						meta: {
+							show: false,
+						},
+					},
+					{
+						path: 'user1',
+						element: (
+							<Suspense fallback={<Loading />}>
+								<User />
+							</Suspense>
+						),
+						id: 'User1',
+						meta: {
+							show: true,
+							key: 'user1',
+							name: '用户管理',
+							icon: <SvgIcon icon="user" />,
+						},
+					},
+					{
+						path: 'role1',
+						element: (
+							<Suspense fallback={<Loading />}>
+								<Role />
+							</Suspense>
+						),
+						id: 'Role1',
+						meta: {
+							show: true,
+							key: 'role1',
+							name: '角色管理',
+							icon: <SvgIcon icon="role" />,
+						},
+					},
+				],
 			},
 		],
 	},

@@ -32,21 +32,33 @@ const getPath = (pathArray: string[]) => {
 	return path
 }
 
-const getDefaultSelectedKey = (pathname: string): string => {
+const getDefaultSelectedKey = (pathname: string): string[] => {
 	const stringArr = pathname.split('/')
-	return stringArr[stringArr.length - 1]
+	console.log(
+		'🔥 >> file: index.tsx:37 >> getDefaultSelectedKey >> stringArr:',
+		stringArr,
+	)
+	return [stringArr[stringArr.length - 1]]
 }
 
-const getDefaultOpenKey = (pathname: string): string => {
+const getDefaultOpenKeys = (pathname: string): string[] => {
 	const stringArr = pathname.split('/')
-	let defaultOpenKey = '/'
+	const defaultOpenKeys = []
 	for (let index = 0; index < stringArr.length - 1; index++) {
 		const element = stringArr[index]
 		if (element) {
-			defaultOpenKey += element
+			if (stringArr.length > 1 && index === 1) {
+				defaultOpenKeys.push(`/${element}`)
+			} else {
+				defaultOpenKeys.push(`${element}`)
+			}
 		}
 	}
-	return defaultOpenKey
+	console.log(
+		'🔥 >> file: index.tsx:58 >> getDefaultOpenKey >> defaultOpenKeys:',
+		defaultOpenKeys,
+	)
+	return defaultOpenKeys
 }
 
 const MenuNav = () => {
@@ -160,8 +172,8 @@ const MenuNav = () => {
 
 	return (
 		<Menu
-			defaultOpenKeys={[getDefaultOpenKey(pathname)]}
-			defaultSelectedKeys={[getDefaultSelectedKey(pathname)]} // 刷新默认显示首页
+			defaultOpenKeys={getDefaultOpenKeys(pathname)}
+			defaultSelectedKeys={getDefaultSelectedKey(pathname)} // 刷新默认显示首页
 			className={classPrefix}
 			mode="inline"
 			items={menuItems}
